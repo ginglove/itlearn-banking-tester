@@ -1,0 +1,277 @@
+{
+  "info": {
+    "name": "NeoBank eKYC Onboarding API (Banking Tester)",
+    "description": "Bộ Collection kiểm thử API định danh trực tuyến và mở tài khoản NeoBank (Buổi 1 & 2)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "B1-B2: OTP Flow",
+      "item": [
+        {
+          "name": "1. Request OTP (B1)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.onboardingId) {",
+                  "    pm.environment.set('onboardingId', jsonData.onboardingId);",
+                  "    console.log('Saved onboardingId:', jsonData.onboardingId);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Sandbox-Id",
+                "value": "{{sandboxId}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phoneNumber\": \"0912345678\",\n  \"email\": \"khachhang@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/onboarding/otp/request",
+              "host": ["{{baseUrl}}"],
+              "path": ["onboarding", "otp", "request"]
+            }
+          }
+        },
+        {
+          "name": "2. Resend OTP (BR-104)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Sandbox-Id",
+                "value": "{{sandboxId}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"onboardingId\": \"{{onboardingId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/onboarding/otp/resend",
+              "host": ["{{baseUrl}}"],
+              "path": ["onboarding", "otp", "resend"]
+            }
+          }
+        },
+        {
+          "name": "3. Verify OTP (B2)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.onboardingToken) {",
+                  "    pm.environment.set('onboardingToken', jsonData.onboardingToken);",
+                  "    console.log('Saved onboardingToken!');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Sandbox-Id",
+                "value": "{{sandboxId}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"onboardingId\": \"{{onboardingId}}\",\n  \"otp\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/onboarding/otp/verify",
+              "host": ["{{baseUrl}}"],
+              "path": ["onboarding", "otp", "verify"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "B3: OCR Processing",
+      "item": [
+        {
+          "name": "4. Process OCR (B3)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{onboardingToken}}"
+              },
+              {
+                "key": "X-Sandbox-Id",
+                "value": "{{sandboxId}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"frontImageUrl\": \"/samples/P01_front.jpg\",\n  \"backImageUrl\": \"/samples/P01_back.jpg\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/onboarding/ocr",
+              "host": ["{{baseUrl}}"],
+              "path": ["onboarding", "ocr"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "B4: Biometrics & Liveness",
+      "item": [
+        {
+          "name": "5. Face Check (B4)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{onboardingToken}}"
+              },
+              {
+                "key": "X-Sandbox-Id",
+                "value": "{{sandboxId}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"selfieUrl\": \"/samples/S_score_95.jpg\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/onboarding/face-check",
+              "host": ["{{baseUrl}}"],
+              "path": ["onboarding", "face-check"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "B5-B6: Confirm & Submit eKYC",
+      "item": [
+        {
+          "name": "6. Submit eKYC (B6)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{onboardingToken}}"
+              },
+              {
+                "key": "X-Sandbox-Id",
+                "value": "{{sandboxId}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phoneNumber\": \"0912345678\",\n  \"idNumber\": \"001098001234\",\n  \"fullName\": \"NGUYEN VAN AN\",\n  \"dob\": \"1998-05-15\",\n  \"expiryDate\": \"2038-05-15\",\n  \"faceMatchScore\": 95.0,\n  \"email\": \"khachhang@example.com\",\n  \"address\": \"So 10 Pho Hang Gai, Quan Hoan Kiem, Ha Noi\",\n  \"password\": \"NeoBank@2026\",\n  \"onboardingId\": \"{{onboardingId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/onboarding/ekyc-submit",
+              "host": ["{{baseUrl}}"],
+              "path": ["onboarding", "ekyc-submit"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Customers: Inquiry",
+      "item": [
+        {
+          "name": "7. Get Customer By CIF",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{onboardingToken}}"
+              },
+              {
+                "key": "X-Sandbox-Id",
+                "value": "{{sandboxId}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/customers/88001001",
+              "host": ["{{baseUrl}}"],
+              "path": ["customers", "88001001"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "SQL Practice: Query",
+      "item": [
+        {
+          "name": "8. Execute SQL Query",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Sandbox-Id",
+                "value": "{{sandboxId}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sql\": \"SELECT * FROM customers;\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/sql/query",
+              "host": ["{{baseUrl}}"],
+              "path": ["sql", "query"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

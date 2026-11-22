@@ -1,0 +1,31 @@
+{
+  "id": "e8902094-a15d-4952-b8ec-f23bb1d9ce22",
+  "name": "NeoBank eKYC Environment",
+  "values": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api/v1",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "sandboxId",
+      "value": "DEMO01",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "onboardingId",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "onboardingToken",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    }
+  ],
+  "_postman_variable_scope": "environment"
+}

@@ -1,0 +1,385 @@
+openapi: 3.0.3
+info:
+  title: NeoBank eKYC Onboarding API
+  description: |
+    API phục vụ định danh trực tuyến (eKYC) và mở tài khoản thanh toán NeoBank.
+    Tài liệu đào tạo Banking Tester Khóa 1-1 (Buổi 1).
+    Căn cứ pháp lý: Nghị định 52/2024/NĐ-CP & Thông tư 17/2024/TT-NHNN.
+  version: 2.1.0
+servers:
+  - url: http://localhost:3000/api/v1
+    description: Môi trường SIT Local
+  - url: /api/v1
+    description: Môi trường SIT Hiện tại
+
+paths:
+  /onboarding/otp/request:
+    post:
+      summary: Khởi tạo yêu cầu mở tài khoản và cấp OTP (Bước B1 - B2)
+      operationId: requestOtp
+      parameters:
+        - name: X-Sandbox-Id
+          in: header
+          required: false
+          schema:
+            type: string
+            default: DEMO01
+          description: Mã sandbox học viên
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - phoneNumber
+              properties:
+                phoneNumber:
+                  type: string
+                  example: "0912345678"
+                  description: Số điện thoại gồm 10 chữ số (đầu số 03, 05, 07, 08, 09)
+                email:
+                  type: string
+                  format: email
+                  example: "khachhang@example.com"
+                  description: Email liên hệ (không bắt buộc)
+      responses:
+        '200':
+          description: Cấp OTP thành công
+          headers:
+            X-Request-Id:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  onboardingId:
+                    type: string
+                    example: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                  otpExpiresIn:
+                    type: integer
+                    example: 60
+                  resendRemaining:
+                    type: integer
+                    example: 3
+        '400':
+          description: Dữ liệu không hợp lệ (VAL-400)
+        '409':
+          description: Số điện thoại đã tồn tại trên hệ thống (EKYC-03)
+        '429':
+          description: Số điện thoại tạm khóa 24 giờ do nhập sai OTP (OTP-02)
+
+  /onboarding/otp/resend:
+    post:
+      summary: Yêu cầu gửi lại mã OTP (BR-104)
+      operationId: resendOtp
+      parameters:
+        - name: X-Sandbox-Id
+          in: header
+          required: false
+          schema:
+            type: string
+            default: DEMO01
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - onboardingId
+              properties:
+                onboardingId:
+                  type: string
+                  example: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+      responses:
+        '200':
+          description: Gửi lại OTP thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  otpExpiresIn:
+                    type: integer
+                    example: 60
+                  resendRemaining:
+                    type: integer
+                    example: 2
+        '429':
+          description: Vượt quá số lần gửi lại OTP (OTP-03)
+
+  /onboarding/otp/verify:
+    post:
+      summary: Xác thực mã OTP (Bước B2)
+      operationId: verifyOtp
+      parameters:
+        - name: X-Sandbox-Id
+          in: header
+          required: false
+          schema:
+            type: string
+            default: DEMO01
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - onboardingId
+                - otp
+              properties:
+                onboardingId:
+                  type: string
+                  example: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                otp:
+                  type: string
+                  example: "123456"
+      responses:
+        '200':
+          description: Xác thực OTP thành công, trả về Bearer Token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  onboardingToken:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        '400':
+          description: Mã OTP không đúng hoặc hết hạn (OTP-01)
+        '429':
+          description: Khóa 24 giờ do sai quá 5 lần (OTP-02)
+
+  /onboarding/ocr:
+    post:
+      summary: Trích xuất thông tin hai mặt CCCD gắn chip (Bước B3)
+      operationId: processOcr
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: X-Sandbox-Id
+          in: header
+          required: false
+          schema:
+            type: string
+            default: DEMO01
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - frontImageUrl
+                - backImageUrl
+              properties:
+                frontImageUrl:
+                  type: string
+                  example: "/samples/P01_front.jpg"
+                backImageUrl:
+                  type: string
+                  example: "/samples/P01_back.jpg"
+      responses:
+        '200':
+          description: Bóc tách OCR thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  idNumber:
+                    type: string
+                    example: "001098001234"
+                  fullName:
+                    type: string
+                    example: "NGUYEN VAN AN"
+                  dob:
+                    type: string
+                    example: "1998-05-15"
+                  expiryDate:
+                    type: string
+                    example: "2038-05-15"
+                  address:
+                    type: string
+                    example: "So 10 Pho Hang Gai, Quan Hoan Kiem, Ha Noi"
+        '400':
+          description: CCCD hết hạn (EKYC-01) hoặc chưa đủ 18 tuổi (EKYC-04)
+
+  /onboarding/face-check:
+    post:
+      summary: Kiểm tra Liveness và đối soát khuôn mặt với ảnh CCCD (Bước B4)
+      operationId: checkFace
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: X-Sandbox-Id
+          in: header
+          required: false
+          schema:
+            type: string
+            default: DEMO01
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - selfieUrl
+              properties:
+                selfieUrl:
+                  type: string
+                  example: "/samples/S_score_95.jpg"
+      responses:
+        '200':
+          description: Xác thực khuôn mặt thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  livenessPassed:
+                    type: boolean
+                    example: true
+                  faceMatchScore:
+                    type: number
+                    example: 95.0
+                  attemptsRemaining:
+                    type: integer
+                    example: 3
+                  passed:
+                    type: boolean
+                    example: true
+        '400':
+          description: Xác thực khuôn mặt không đạt (EKYC-02)
+        '423':
+          description: Khóa phiên 30 phút do trượt 3 lần (SES-01)
+
+  /onboarding/ekyc-submit:
+    post:
+      summary: Xác nhận hồ sơ và khởi tạo CIF + Tài khoản CASA trong Core Banking (Bước B6)
+      operationId: submitEkyc
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: X-Sandbox-Id
+          in: header
+          required: false
+          schema:
+            type: string
+            default: DEMO01
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - phoneNumber
+                - idNumber
+                - fullName
+                - dob
+                - expiryDate
+                - faceMatchScore
+              properties:
+                phoneNumber:
+                  type: string
+                  example: "0912345678"
+                idNumber:
+                  type: string
+                  example: "001098001234"
+                fullName:
+                  type: string
+                  example: "NGUYEN VAN AN"
+                dob:
+                  type: string
+                  example: "1998-05-15"
+                expiryDate:
+                  type: string
+                  example: "2038-05-15"
+                faceMatchScore:
+                  type: number
+                  example: 92.5
+                email:
+                  type: string
+                  example: "khachhang@example.com"
+                  description: Trường bổ sung trong hệ thống thực tế
+                address:
+                  type: string
+                  example: "So 10 Pho Hang Gai, Quan Hoan Kiem, Ha Noi"
+                  description: Trường bổ sung trong hệ thống thực tế
+                password:
+                  type: string
+                  example: "NeoBank@2026"
+                  description: Mật khẩu đăng nhập ứng dụng (B5)
+                onboardingId:
+                  type: string
+                  example: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+      responses:
+        '200':
+          description: Khởi tạo tài khoản thành công (Khớp 100% mẫu SRS Mục 5)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  responseCode:
+                    type: string
+                    example: "00"
+                  message:
+                    type: string
+                    example: "Khoi tao tai khoan thanh cong"
+                  data:
+                    type: object
+                    properties:
+                      cifNumber:
+                        type: string
+                        example: "88001245"
+                      accountNumber:
+                        type: string
+                        example: "1903456789012"
+                      status:
+                        type: string
+                        example: "ACTIVE"
+        '400':
+          description: Dữ liệu không hợp lệ (VAL-400)
+        '409':
+          description: Bạn đã có tài khoản tại NeoBank (EKYC-05)
+        '500':
+          description: Hệ thống đang bận, vui lòng thử lại sau (EKYC-99)
+
+  /customers/{cifNumber}:
+    get:
+      summary: Tra cứu hồ sơ khách hàng và danh sách tài khoản theo mã CIF
+      operationId: getCustomerByCif
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: cifNumber
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "88001001"
+        - name: X-Sandbox-Id
+          in: header
+          required: false
+          schema:
+            type: string
+            default: DEMO01
+      responses:
+        '200':
+          description: Trả về thông tin khách hàng và tài khoản
+        '404':
+          description: Không tìm thấy khách hàng
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
