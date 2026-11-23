@@ -1,4 +1,4 @@
-CREATE TABLE "accounts" (
+CREATE TABLE IF NOT EXISTS "accounts" (
 	"sandbox_id" text NOT NULL,
 	"account_number" text NOT NULL,
 	"cif_number" text NOT NULL,
@@ -9,7 +9,7 @@ CREATE TABLE "accounts" (
 	CONSTRAINT "accounts_sandbox_id_account_number_pk" PRIMARY KEY("sandbox_id","account_number")
 );
 --> statement-breakpoint
-CREATE TABLE "api_logs" (
+CREATE TABLE IF NOT EXISTS "api_logs" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"sandbox_id" text NOT NULL,
 	"request_id" text NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE "api_logs" (
 	"at" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "customers" (
+CREATE TABLE IF NOT EXISTS "customers" (
 	"sandbox_id" text NOT NULL,
 	"cif_number" text NOT NULL,
 	"id_number" text NOT NULL,
@@ -36,7 +36,7 @@ CREATE TABLE "customers" (
 	CONSTRAINT "customers_sandbox_id_cif_number_pk" PRIMARY KEY("sandbox_id","cif_number")
 );
 --> statement-breakpoint
-CREATE TABLE "onboarding_sessions" (
+CREATE TABLE IF NOT EXISTS "onboarding_sessions" (
 	"id" text PRIMARY KEY NOT NULL,
 	"sandbox_id" text NOT NULL,
 	"phone_number" text NOT NULL,
@@ -54,14 +54,14 @@ CREATE TABLE "onboarding_sessions" (
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "phone_locks" (
+CREATE TABLE IF NOT EXISTS "phone_locks" (
 	"sandbox_id" text NOT NULL,
 	"phone_number" text NOT NULL,
 	"locked_until" timestamp with time zone NOT NULL,
 	CONSTRAINT "phone_locks_sandbox_id_phone_number_pk" PRIMARY KEY("sandbox_id","phone_number")
 );
 --> statement-breakpoint
-CREATE TABLE "sandboxes" (
+CREATE TABLE IF NOT EXISTS "sandboxes" (
 	"id" text PRIMARY KEY NOT NULL,
 	"code" text NOT NULL,
 	"name" text NOT NULL,
@@ -69,14 +69,14 @@ CREATE TABLE "sandboxes" (
 	CONSTRAINT "sandboxes_code_unique" UNIQUE("code")
 );
 --> statement-breakpoint
-CREATE TABLE "settings" (
+CREATE TABLE IF NOT EXISTS "settings" (
 	"sandbox_id" text NOT NULL,
 	"key" text NOT NULL,
 	"value" text NOT NULL,
 	CONSTRAINT "settings_sandbox_id_key_pk" PRIMARY KEY("sandbox_id","key")
 );
 --> statement-breakpoint
-CREATE TABLE "sms_outbox" (
+CREATE TABLE IF NOT EXISTS "sms_outbox" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"sandbox_id" text NOT NULL,
 	"phone_number" text NOT NULL,

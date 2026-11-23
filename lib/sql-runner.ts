@@ -88,16 +88,21 @@ export async function executeLearnerQuery(
   const startTime = Date.now();
 
   let pool: Pool;
+  const isSsl = env.DATABASE_URL.includes('neon.tech') || env.DATABASE_URL.includes('sslmode=require');
+  const sslConfig = isSsl ? { rejectUnauthorized: false } : undefined;
+
   try {
     pool = new Pool({
       connectionString: getReadonlyConnectionString(),
       max: 2,
       connectionTimeoutMillis: 3000,
+      ssl: sslConfig,
     });
   } catch {
     pool = new Pool({
       connectionString: env.DATABASE_URL,
       max: 2,
+      ssl: sslConfig,
     });
   }
 

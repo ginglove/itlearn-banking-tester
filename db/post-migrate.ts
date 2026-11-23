@@ -14,7 +14,15 @@ const readonlyPassword = process.env.READONLY_DB_PASSWORD || 'readonly_secret_pa
 
 async function postMigrate() {
   console.log('[post-migrate] Starting post-migration setup...');
-  const pool = new Pool({ connectionString });
+  const isSsl =
+    connectionString.includes('neon.tech') ||
+    connectionString.includes('sslmode=require') ||
+    connectionString.includes('ssl=true');
+
+  const pool = new Pool({
+    connectionString,
+    ssl: isSsl ? { rejectUnauthorized: false } : undefined,
+  });
 
   try {
     // 1. Create or update ekyc_readonly role

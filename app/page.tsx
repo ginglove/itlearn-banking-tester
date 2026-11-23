@@ -23,6 +23,8 @@ import {
   Copy,
   Database,
   FileCode,
+  Sparkles,
+  ArrowRight,
 } from 'lucide-react';
 
 interface HealthData {
@@ -171,7 +173,6 @@ export default function StudentOnboardingApp() {
 
       const data = await res.json();
       if (!res.ok && res.status !== 200) {
-        // Special case: duplicate CCCD redirect to S08 if 409
         if (res.status === 409 && data.responseCode === 'EKYC-05') {
           setCurrentStep('S08');
         } else {
@@ -183,7 +184,6 @@ export default function StudentOnboardingApp() {
         return { ok: false, status: res.status, data };
       }
 
-      // Check business error payload even if HTTP 200 (e.g. D13)
       if (data.responseCode && data.responseCode !== '00') {
         setApiError({
           code: data.responseCode,
@@ -207,7 +207,6 @@ export default function StudentOnboardingApp() {
   // STEP 1: Request OTP (B1)
   const handleRequestOtp = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Client-side prefix check for UI
     if (!/^(03|05|07|08|09)\d{8}$/.test(phoneNumber)) {
       setApiError({
         code: 'VAL-400',
@@ -226,7 +225,6 @@ export default function StudentOnboardingApp() {
       setOtpCountdown(res.data.otpExpiresIn || 60);
       setResendRemaining(res.data.resendRemaining ?? 3);
       setCurrentStep('S02');
-      // Auto open SMS drawer so tester sees OTP
       setSmsDrawerOpen(true);
     }
   };
@@ -309,7 +307,6 @@ export default function StudentOnboardingApp() {
       const remaining = details.attemptsRemaining !== undefined ? details.attemptsRemaining : 0;
       setFaceAttemptsRemaining(remaining);
       if (remaining === 0) {
-        // 30 min lock
         setFaceLockUntil(Date.now() + 30 * 60 * 1000);
       }
     }
@@ -368,24 +365,25 @@ export default function StudentOnboardingApp() {
     <div
       style={{
         minHeight: '100vh',
-        backgroundColor: '#030712',
+        backgroundColor: '#f1f5f9',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '16px',
+        padding: '20px 12px',
         position: 'relative',
+        color: '#0f172a',
       }}
     >
       {/* Top Navbar / Student Quick Tools */}
       <div
         style={{
           width: '100%',
-          maxWidth: '430px',
+          maxWidth: '420px',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginBottom: '12px',
+          marginBottom: '14px',
           padding: '0 4px',
         }}
       >
@@ -393,14 +391,19 @@ export default function StudentOnboardingApp() {
           <span
             style={{
               fontSize: '11px',
-              padding: '2px 8px',
+              padding: '3px 10px',
               borderRadius: '9999px',
-              background: '#1e293b',
-              color: '#38bdf8',
-              fontWeight: 600,
-              border: '1px solid #334155',
+              background: '#ffffff',
+              color: '#0284c7',
+              fontWeight: 700,
+              border: '1px solid #cbd5e1',
+              boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
             }}
           >
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981' }}></span>
             SANDBOX: {sandboxId}
           </span>
         </div>
@@ -415,14 +418,16 @@ export default function StudentOnboardingApp() {
               display: 'flex',
               alignItems: 'center',
               gap: '4px',
-              padding: '4px 10px',
-              borderRadius: '6px',
-              background: '#1e293b',
-              color: '#94a3b8',
-              border: '1px solid #334155',
+              padding: '5px 12px',
+              borderRadius: '8px',
+              background: '#ffffff',
+              color: '#334155',
+              border: '1px solid #cbd5e1',
+              boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+              fontWeight: 600,
             }}
           >
-            <Database size={13} />
+            <Database size={13} color="#0284c7" />
             SQL Tra cứu
           </a>
           <a
@@ -434,29 +439,31 @@ export default function StudentOnboardingApp() {
               display: 'flex',
               alignItems: 'center',
               gap: '4px',
-              padding: '4px 10px',
-              borderRadius: '6px',
-              background: '#1e293b',
-              color: '#94a3b8',
-              border: '1px solid #334155',
+              padding: '5px 12px',
+              borderRadius: '8px',
+              background: '#ffffff',
+              color: '#334155',
+              border: '1px solid #cbd5e1',
+              boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+              fontWeight: 600,
             }}
           >
-            <FileCode size={13} />
+            <FileCode size={13} color="#0284c7" />
             Swagger API
           </a>
         </div>
       </div>
 
-      {/* Mobile Device Frame (390px viewport standard) */}
+      {/* Mobile Device Frame (390px viewport standard - Light Theme) */}
       <div
         style={{
           width: '100%',
           maxWidth: '390px',
           minHeight: '740px',
-          background: 'var(--bg-card)',
-          borderRadius: '32px',
-          border: '8px solid #1e293b',
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)',
+          background: '#ffffff',
+          borderRadius: '36px',
+          border: '10px solid #0f172a',
+          boxShadow: '0 25px 50px -12px rgba(15, 23, 42, 0.18), 0 0 0 1px rgba(15, 23, 42, 0.08)',
           display: 'flex',
           flexDirection: 'column',
           position: 'relative',
@@ -466,24 +473,25 @@ export default function StudentOnboardingApp() {
         {/* Device Notch & Status bar */}
         <div
           style={{
-            height: '36px',
-            background: '#0f172a',
+            height: '34px',
+            background: '#ffffff',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             padding: '0 20px',
             fontSize: '11px',
             color: '#64748b',
-            borderBottom: '1px solid #1e293b',
+            borderBottom: '1px solid #f1f5f9',
+            fontWeight: 600,
           }}
         >
           <span>9:41</span>
           <div
             style={{
-              width: '80px',
+              width: '84px',
               height: '14px',
-              background: '#030712',
-              borderRadius: '8px',
+              background: '#0f172a',
+              borderRadius: '9999px',
             }}
           />
           <span>5G • 100%</span>
@@ -492,36 +500,37 @@ export default function StudentOnboardingApp() {
         {/* Header Branding */}
         <div
           style={{
-            padding: '16px 20px',
-            background: 'linear-gradient(180deg, #1e293b 0%, #1c2541 100%)',
-            borderBottom: '1px solid #334155',
+            padding: '14px 18px',
+            background: '#ffffff',
+            borderBottom: '1px solid #e2e8f0',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div
               style={{
-                width: '32px',
-                height: '32px',
-                borderRadius: '8px',
-                background: 'linear-gradient(135deg, #0284c7 0%, #38bdf8 100%)',
+                width: '34px',
+                height: '34px',
+                borderRadius: '10px',
+                background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: '#fff',
-                fontWeight: 800,
-                fontSize: '16px',
+                fontWeight: 900,
+                fontSize: '17px',
+                boxShadow: '0 2px 6px rgba(2, 132, 199, 0.3)',
               }}
             >
               N
             </div>
             <div>
-              <div style={{ fontWeight: 800, fontSize: '15px', color: '#f8fafc', letterSpacing: '0.5px' }}>
+              <div style={{ fontWeight: 800, fontSize: '15px', color: '#0f172a', letterSpacing: '0.4px' }}>
                 NeoBank
               </div>
-              <div style={{ fontSize: '10px', color: '#38bdf8' }}>Digital Banking</div>
+              <div style={{ fontSize: '10px', color: '#0284c7', fontWeight: 700 }}>DIGITAL BANKING</div>
             </div>
           </div>
 
@@ -529,15 +538,16 @@ export default function StudentOnboardingApp() {
             <button
               onClick={() => setSmsDrawerOpen(true)}
               style={{
-                background: '#0f172a',
-                border: '1px solid #334155',
-                color: '#38bdf8',
+                background: '#f0f9ff',
+                border: '1px solid #bae6fd',
+                color: '#0284c7',
                 borderRadius: '8px',
                 padding: '6px 10px',
                 fontSize: '11px',
+                fontWeight: 700,
                 display: 'flex',
                 alignItems: 'center',
-                gap: '4px',
+                gap: '5px',
                 cursor: 'pointer',
               }}
             >
@@ -551,89 +561,98 @@ export default function StudentOnboardingApp() {
         {apiError && (
           <div
             style={{
-              background: 'rgba(239, 68, 68, 0.15)',
-              borderBottom: '1px solid #f43f5e',
+              background: '#fff1f2',
+              borderBottom: '1px solid #fecdd3',
               padding: '10px 16px',
               display: 'flex',
               alignItems: 'flex-start',
               gap: '8px',
-              color: '#fca5a5',
+              color: '#9f1239',
               fontSize: '12px',
               animation: 'fadeIn 0.2s ease',
             }}
           >
-            <AlertCircle size={16} style={{ color: '#f43f5e', flexShrink: 0, marginTop: '2px' }} />
+            <AlertCircle size={16} style={{ color: '#e11d48', flexShrink: 0, marginTop: '2px' }} />
             <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: 700, color: '#f43f5e', marginBottom: '2px' }}>
+              <div style={{ fontWeight: 800, color: '#be123c', marginBottom: '2px' }}>
                 Lỗi {apiError.code}
               </div>
-              <div>{apiError.message}</div>
+              <div style={{ lineHeight: 1.4 }}>{apiError.message}</div>
             </div>
             <button
               onClick={() => setApiError(null)}
               style={{
                 background: 'none',
                 border: 'none',
-                color: '#fca5a5',
+                color: '#be123c',
                 cursor: 'pointer',
                 padding: 0,
               }}
             >
-              <X size={14} />
+              <X size={15} />
             </button>
           </div>
         )}
 
         {/* Body content based on step */}
-        <div style={{ flex: 1, padding: '20px', overflowY: 'auto' }}>
+        <div style={{ flex: 1, padding: '18px', overflowY: 'auto', background: '#ffffff' }}>
           {/* S00: Chào mừng */}
           {currentStep === 'S00' && (
             <div style={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'space-between' }}>
-              <div style={{ textAlign: 'center', marginTop: '20px' }}>
+              <div style={{ textAlign: 'center', marginTop: '16px' }}>
                 <div
                   style={{
-                    width: '72px',
-                    height: '72px',
-                    borderRadius: '20px',
-                    background: 'linear-gradient(135deg, #0284c7 0%, #38bdf8 100%)',
+                    width: '74px',
+                    height: '74px',
+                    borderRadius: '22px',
+                    background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    margin: '0 auto 20px',
-                    boxShadow: '0 10px 25px -5px rgba(2, 132, 199, 0.5)',
+                    margin: '0 auto 18px',
+                    boxShadow: '0 10px 25px -5px rgba(2, 132, 199, 0.4)',
                   }}
                 >
-                  <ShieldCheck size={38} color="#fff" />
+                  <ShieldCheck size={40} color="#fff" />
                 </div>
-                <h1 style={{ fontSize: '22px', fontWeight: 700, marginBottom: '8px', color: '#f8fafc' }}>
+                <h1 style={{ fontSize: '22px', fontWeight: 800, marginBottom: '8px', color: '#0f172a' }}>
                   Mở Tài Khoản Trực Tuyến
                 </h1>
-                <p style={{ fontSize: '13px', color: '#94a3b8', lineHeight: 1.5, marginBottom: '24px' }}>
-                  Định danh điện tử eKYC 100% trong 3 phút. Miễn phí mở tài khoản thanh toán và phát hành thẻ số.
+                <p style={{ fontSize: '13px', color: '#475569', lineHeight: 1.5, marginBottom: '22px' }}>
+                  Định danh điện tử eKYC 100% trong 3 phút. Miễn phí mở tài khoản thanh toán CASA và phát hành thẻ số.
                 </p>
 
                 <div
                   style={{
-                    background: '#0f172a',
-                    borderRadius: '12px',
-                    padding: '14px',
+                    background: '#f8fafc',
+                    borderRadius: '14px',
+                    padding: '16px',
                     textAlign: 'left',
-                    border: '1px solid #334155',
+                    border: '1px solid #e2e8f0',
                     marginBottom: '20px',
                   }}
                 >
-                  <div style={{ fontSize: '12px', fontWeight: 600, color: '#38bdf8', marginBottom: '8px' }}>
+                  <div style={{ fontSize: '12px', fontWeight: 800, color: '#0284c7', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                     Quy trình eKYC 3 bước nhanh chóng:
                   </div>
-                  <div style={{ fontSize: '12px', color: '#cbd5e1', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    <div>1. Xác thực số điện thoại qua mã SMS OTP</div>
-                    <div>2. Chụp 2 mặt CCCD gắn chip (OCR tự động)</div>
-                    <div>3. Nhận diện khuôn mặt &amp; kiểm tra sinh trắc</div>
+                  <div style={{ fontSize: '13px', color: '#334155', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ width: '20px', height: '20px', borderRadius: '50%', background: '#e0f2fe', color: '#0284c7', fontSize: '11px', fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>1</span>
+                      <span>Xác thực số điện thoại qua SMS OTP</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ width: '20px', height: '20px', borderRadius: '50%', background: '#e0f2fe', color: '#0284c7', fontSize: '11px', fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>2</span>
+                      <span>Chụp 2 mặt CCCD gắn chip (OCR tự động)</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ width: '20px', height: '20px', borderRadius: '50%', background: '#e0f2fe', color: '#0284c7', fontSize: '11px', fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>3</span>
+                      <span>Nhận diện khuôn mặt &amp; kiểm tra sinh trắc</span>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div style={{ marginTop: 'auto' }}>
+              <div style={{ marginTop: 'auto', paddingTop: '16px' }}>
                 <button
                   onClick={() => setCurrentStep('S01')}
                   style={{
@@ -646,7 +665,7 @@ export default function StudentOnboardingApp() {
                     fontSize: '15px',
                     border: 'none',
                     cursor: 'pointer',
-                    boxShadow: '0 4px 12px rgba(2, 132, 199, 0.3)',
+                    boxShadow: '0 4px 14px rgba(2, 132, 199, 0.35)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -664,18 +683,18 @@ export default function StudentOnboardingApp() {
           {currentStep === 'S01' && (
             <div>
               <div style={{ marginBottom: '20px' }}>
-                <h2 style={{ fontSize: '18px', fontWeight: 700, color: '#f8fafc', marginBottom: '4px' }}>
+                <h2 style={{ fontSize: '18px', fontWeight: 800, color: '#0f172a', marginBottom: '4px' }}>
                   Thông tin đăng ký
                 </h2>
-                <p style={{ fontSize: '12px', color: '#94a3b8' }}>
-                  Bước 1/6 • Vui lòng nhập số điện thoại chính chủ
+                <p style={{ fontSize: '12px', color: '#64748b' }}>
+                  Bước 1/6 • Vui lòng nhập số điện thoại chính chủ của bạn
                 </p>
               </div>
 
               <form onSubmit={handleRequestOtp} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: '13px', color: '#cbd5e1', marginBottom: '6px', fontWeight: 500 }}>
-                    Số điện thoại <span style={{ color: '#f43f5e' }}>*</span>
+                  <label style={{ display: 'block', fontSize: '13px', color: '#334155', marginBottom: '6px', fontWeight: 700 }}>
+                    Số điện thoại <span style={{ color: '#ef4444' }}>*</span>
                   </label>
                   <div style={{ position: 'relative' }}>
                     <Phone
@@ -691,23 +710,24 @@ export default function StudentOnboardingApp() {
                       style={{
                         width: '100%',
                         padding: '12px 12px 12px 38px',
-                        background: '#0f172a',
-                        border: '1px solid #334155',
+                        background: '#ffffff',
+                        border: '1px solid #cbd5e1',
                         borderRadius: '10px',
-                        color: '#f8fafc',
+                        color: '#0f172a',
                         fontSize: '15px',
                         outline: 'none',
+                        fontWeight: 600,
                       }}
                       required
                     />
                   </div>
-                  <div style={{ fontSize: '11px', color: '#64748b', marginTop: '4px' }}>
+                  <div style={{ fontSize: '11px', color: '#64748b', marginTop: '5px' }}>
                     Gồm 10 chữ số, đầu số hợp lệ: 03, 05, 07, 08, 09
                   </div>
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: '13px', color: '#cbd5e1', marginBottom: '6px', fontWeight: 500 }}>
+                  <label style={{ display: 'block', fontSize: '13px', color: '#334155', marginBottom: '6px', fontWeight: 700 }}>
                     Địa chỉ Email (Không bắt buộc)
                   </label>
                   <div style={{ position: 'relative' }}>
@@ -723,10 +743,10 @@ export default function StudentOnboardingApp() {
                       style={{
                         width: '100%',
                         padding: '12px 12px 12px 38px',
-                        background: '#0f172a',
-                        border: '1px solid #334155',
+                        background: '#ffffff',
+                        border: '1px solid #cbd5e1',
                         borderRadius: '10px',
-                        color: '#f8fafc',
+                        color: '#0f172a',
                         fontSize: '15px',
                         outline: 'none',
                       }}
@@ -749,6 +769,7 @@ export default function StudentOnboardingApp() {
                       border: 'none',
                       cursor: loading ? 'not-allowed' : 'pointer',
                       opacity: loading ? 0.7 : 1,
+                      boxShadow: '0 4px 12px rgba(2, 132, 199, 0.3)',
                     }}
                   >
                     {loading ? 'Đang gửi mã...' : 'Gửi mã OTP'}
@@ -762,10 +783,10 @@ export default function StudentOnboardingApp() {
           {currentStep === 'S02' && (
             <div>
               <div style={{ marginBottom: '20px' }}>
-                <h2 style={{ fontSize: '18px', fontWeight: 700, color: '#f8fafc', marginBottom: '4px' }}>
+                <h2 style={{ fontSize: '18px', fontWeight: 800, color: '#0f172a', marginBottom: '4px' }}>
                   Xác thực mã OTP
                 </h2>
-                <p style={{ fontSize: '12px', color: '#94a3b8' }}>
+                <p style={{ fontSize: '12px', color: '#64748b' }}>
                   Mã 6 chữ số đã gửi tới số điện thoại <b>{phoneNumber}</b>
                 </p>
               </div>
@@ -801,23 +822,24 @@ export default function StudentOnboardingApp() {
                       height: '52px',
                       textAlign: 'center',
                       fontSize: '20px',
-                      fontWeight: 700,
-                      background: '#0f172a',
-                      border: digit ? '2px solid #38bdf8' : '1px solid #334155',
+                      fontWeight: 800,
+                      background: '#ffffff',
+                      border: digit ? '2px solid #0284c7' : '1px solid #cbd5e1',
                       borderRadius: '10px',
-                      color: '#f8fafc',
+                      color: '#0f172a',
                       outline: 'none',
+                      boxShadow: digit ? '0 0 0 3px rgba(2, 132, 199, 0.15)' : 'none',
                     }}
                   />
                 ))}
               </div>
 
               {/* Countdown & Resend */}
-              <div style={{ textAlign: 'center', fontSize: '13px', color: '#94a3b8', marginBottom: '24px' }}>
+              <div style={{ textAlign: 'center', fontSize: '13px', color: '#64748b', marginBottom: '24px' }}>
                 {otpCountdown > 0 ? (
                   <span>Mã hiệu lực trong <b>{otpCountdown} giây</b></span>
                 ) : (
-                  <span style={{ color: '#f43f5e' }}>Mã OTP đã hết hiệu lực</span>
+                  <span style={{ color: '#ef4444', fontWeight: 700 }}>Mã OTP đã hết hiệu lực</span>
                 )}
                 <div style={{ marginTop: '8px' }}>
                   <button
@@ -826,9 +848,9 @@ export default function StudentOnboardingApp() {
                     style={{
                       background: 'none',
                       border: 'none',
-                      color: resendRemaining > 0 ? '#38bdf8' : '#64748b',
+                      color: resendRemaining > 0 ? '#0284c7' : '#94a3b8',
                       fontSize: '13px',
-                      fontWeight: 600,
+                      fontWeight: 700,
                       cursor: resendRemaining > 0 ? 'pointer' : 'not-allowed',
                       textDecoration: 'underline',
                     }}
@@ -851,6 +873,7 @@ export default function StudentOnboardingApp() {
                   fontSize: '15px',
                   border: 'none',
                   cursor: loading ? 'not-allowed' : 'pointer',
+                  boxShadow: '0 4px 12px rgba(2, 132, 199, 0.3)',
                 }}
               >
                 {loading ? 'Đang kiểm tra...' : 'Xác nhận OTP'}
@@ -862,26 +885,26 @@ export default function StudentOnboardingApp() {
           {currentStep === 'S03' && (
             <div>
               <div style={{ marginBottom: '16px' }}>
-                <h2 style={{ fontSize: '18px', fontWeight: 700, color: '#f8fafc', marginBottom: '4px' }}>
+                <h2 style={{ fontSize: '18px', fontWeight: 800, color: '#0f172a', marginBottom: '4px' }}>
                   Chụp ảnh CCCD gắn chip
                 </h2>
-                <p style={{ fontSize: '12px', color: '#94a3b8' }}>
-                  Bước 2/6 • Chụp rõ nét mặt trước và mặt sau CCCD (100KB - 5MB)
+                <p style={{ fontSize: '12px', color: '#64748b' }}>
+                  Bước 2/6 • Thẻ Căn cước công dân gắn chip chuẩn Việt Nam (100KB - 5MB)
                 </p>
               </div>
 
               {/* Persona Sample Selector */}
               <div
                 style={{
-                  background: '#0f172a',
-                  borderRadius: '12px',
+                  background: '#f8fafc',
+                  borderRadius: '14px',
                   padding: '12px',
-                  border: '1px solid #334155',
+                  border: '1px solid #e2e8f0',
                   marginBottom: '16px',
                 }}
               >
-                <div style={{ fontSize: '12px', fontWeight: 600, color: '#38bdf8', marginBottom: '8px' }}>
-                  Thư viện ảnh mẫu kiểm thử (Chọn Persona):
+                <div style={{ fontSize: '12px', fontWeight: 800, color: '#0284c7', marginBottom: '8px' }}>
+                  Thư viện CCCD gắn chip thực nghiệm:
                 </div>
                 <select
                   value={selectedPersona}
@@ -893,60 +916,67 @@ export default function StudentOnboardingApp() {
                   }}
                   style={{
                     width: '100%',
-                    padding: '8px 12px',
+                    padding: '10px 12px',
                     borderRadius: '8px',
-                    background: '#1e293b',
-                    color: '#f8fafc',
-                    border: '1px solid #475569',
+                    background: '#ffffff',
+                    color: '#0f172a',
+                    border: '1px solid #cbd5e1',
                     fontSize: '13px',
+                    fontWeight: 600,
                     outline: 'none',
                   }}
                 >
-                  <option value="P01">Mẫu P01: NGUYEN VAN AN (Chuẩn Happy Path)</option>
-                  <option value="P02">Mẫu P02: TRAN THI BINH (Sai địa chỉ OCR - Luồng 3A)</option>
-                  <option value="P03">Mẫu P03: LE MINH CUONG (Đúng 18 tuổi hôm nay)</option>
-                  <option value="P04">Mẫu P04: PHAM THU DUNG (Ngày mai mới đủ 18 tuổi)</option>
-                  <option value="P05">Mẫu P05: VO HOANG EM (16 tuổi)</option>
-                  <option value="P06">Mẫu P06: HOANG VAN GIANG (Đã có CIF)</option>
-                  <option value="P07">Mẫu P07: DANG THI HANH (Hết hạn đúng hôm nay)</option>
-                  <option value="P08">Mẫu P08: BUI VAN KHOA (Không thời hạn)</option>
-                  <option value="P09">Mẫu P09: NGO THI LAN (Đã hết hạn)</option>
+                  <option value="P01">Mẫu P01: NGUYỄN VĂN AN (Chuẩn Happy Path - 1998)</option>
+                  <option value="P02">Mẫu P02: TRẦN THỊ BÌNH (Địa chỉ có ký tự lạ - Luồng 3A)</option>
+                  <option value="P03">Mẫu P03: LÊ MINH CƯỜNG (Đúng 18 tuổi hôm nay)</option>
+                  <option value="P04">Mẫu P04: PHẠM THU DUNG (Ngày mai mới đủ 18 tuổi)</option>
+                  <option value="P05">Mẫu P05: VÕ HOÀNG EM (Khách hàng 16 tuổi)</option>
+                  <option value="P06">Mẫu P06: HOÀNG VĂN GIANG (Đã có CIF)</option>
+                  <option value="P07">Mẫu P07: ĐẶNG THỊ HẠNH (Hết hạn đúng hôm nay)</option>
+                  <option value="P08">Mẫu P08: BÙI VĂN KHOA (Không thời hạn)</option>
+                  <option value="P09">Mẫu P09: NGÔ THỊ LAN (Đã hết hạn sử dụng)</option>
                 </select>
               </div>
 
-              {/* Card Previews */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' }}>
+              {/* Real Card Previews */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '20px' }}>
                 <div
                   style={{
-                    border: '1px dashed #475569',
-                    borderRadius: '12px',
-                    padding: '8px',
-                    background: '#0f172a',
-                    textAlign: 'center',
+                    border: '1px solid #e2e8f0',
+                    borderRadius: '14px',
+                    padding: '10px',
+                    background: '#f8fafc',
+                    boxShadow: '0 2px 6px rgba(0,0,0,0.04)',
                   }}
                 >
-                  <div style={{ fontSize: '11px', color: '#94a3b8', marginBottom: '6px' }}>Mặt trước CCCD</div>
+                  <div style={{ fontSize: '11px', fontWeight: 700, color: '#475569', marginBottom: '8px', display: 'flex', justifyContent: 'space-between' }}>
+                    <span>Mặt trước CCCD gắn chip</span>
+                    <span style={{ color: '#0284c7' }}>Ảnh thật 100%</span>
+                  </div>
                   <img
                     src={frontImageUrl}
                     alt="CCCD Front"
-                    style={{ width: '100%', height: 'auto', borderRadius: '8px', maxHeight: '120px', objectFit: 'contain' }}
+                    style={{ width: '100%', height: 'auto', borderRadius: '10px', border: '1px solid #cbd5e1', objectFit: 'contain' }}
                   />
                 </div>
 
                 <div
                   style={{
-                    border: '1px dashed #475569',
-                    borderRadius: '12px',
-                    padding: '8px',
-                    background: '#0f172a',
-                    textAlign: 'center',
+                    border: '1px solid #e2e8f0',
+                    borderRadius: '14px',
+                    padding: '10px',
+                    background: '#f8fafc',
+                    boxShadow: '0 2px 6px rgba(0,0,0,0.04)',
                   }}
                 >
-                  <div style={{ fontSize: '11px', color: '#94a3b8', marginBottom: '6px' }}>Mặt sau CCCD</div>
+                  <div style={{ fontSize: '11px', fontWeight: 700, color: '#475569', marginBottom: '8px', display: 'flex', justifyContent: 'space-between' }}>
+                    <span>Mặt sau CCCD gắn chip (Microchip &amp; MRZ)</span>
+                    <span style={{ color: '#0284c7' }}>Ảnh thật 100%</span>
+                  </div>
                   <img
                     src={backImageUrl}
                     alt="CCCD Back"
-                    style={{ width: '100%', height: 'auto', borderRadius: '8px', maxHeight: '120px', objectFit: 'contain' }}
+                    style={{ width: '100%', height: 'auto', borderRadius: '10px', border: '1px solid #cbd5e1', objectFit: 'contain' }}
                   />
                 </div>
               </div>
@@ -964,6 +994,7 @@ export default function StudentOnboardingApp() {
                   fontSize: '15px',
                   border: 'none',
                   cursor: loading ? 'not-allowed' : 'pointer',
+                  boxShadow: '0 4px 12px rgba(2, 132, 199, 0.3)',
                 }}
               >
                 {loading ? 'Đang trích xuất OCR...' : 'Trích xuất thông tin OCR'}
@@ -975,10 +1006,10 @@ export default function StudentOnboardingApp() {
           {currentStep === 'S04' && (
             <div>
               <div style={{ marginBottom: '16px' }}>
-                <h2 style={{ fontSize: '18px', fontWeight: 700, color: '#f8fafc', marginBottom: '4px' }}>
+                <h2 style={{ fontSize: '18px', fontWeight: 800, color: '#0f172a', marginBottom: '4px' }}>
                   Xác nhận thông tin CCCD
                 </h2>
-                <p style={{ fontSize: '12px', color: '#94a3b8' }}>
+                <p style={{ fontSize: '12px', color: '#64748b' }}>
                   Bước 3/6 • Chỉ được phép sửa trường Địa chỉ nếu OCR nhận diện sai (Luồng 3A)
                 </p>
               </div>
@@ -986,8 +1017,8 @@ export default function StudentOnboardingApp() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' }}>
                 {/* Locked Số CCCD */}
                 <div>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: '#94a3b8', marginBottom: '4px' }}>
-                    <Lock size={12} color="#f59e0b" /> Số CCCD (Bị khóa)
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: '#64748b', marginBottom: '4px', fontWeight: 700 }}>
+                    <Lock size={12} color="#f59e0b" /> Số CCCD (Bị khóa theo SRS)
                   </label>
                   <input
                     type="text"
@@ -996,20 +1027,21 @@ export default function StudentOnboardingApp() {
                     style={{
                       width: '100%',
                       padding: '10px 12px',
-                      background: '#1e293b',
-                      border: '1px solid #334155',
+                      background: '#f1f5f9',
+                      border: '1px solid #e2e8f0',
                       borderRadius: '8px',
-                      color: '#94a3b8',
+                      color: '#475569',
                       fontSize: '14px',
                       cursor: 'not-allowed',
+                      fontWeight: 700,
                     }}
                   />
                 </div>
 
                 {/* Locked Họ và tên */}
                 <div>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: '#94a3b8', marginBottom: '4px' }}>
-                    <Lock size={12} color="#f59e0b" /> Họ và tên (Bị khóa)
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: '#64748b', marginBottom: '4px', fontWeight: 700 }}>
+                    <Lock size={12} color="#f59e0b" /> Họ và tên (Bị khóa theo SRS)
                   </label>
                   <input
                     type="text"
@@ -1018,12 +1050,13 @@ export default function StudentOnboardingApp() {
                     style={{
                       width: '100%',
                       padding: '10px 12px',
-                      background: '#1e293b',
-                      border: '1px solid #334155',
+                      background: '#f1f5f9',
+                      border: '1px solid #e2e8f0',
                       borderRadius: '8px',
-                      color: '#94a3b8',
+                      color: '#475569',
                       fontSize: '14px',
                       cursor: 'not-allowed',
+                      fontWeight: 700,
                     }}
                   />
                 </div>
@@ -1031,7 +1064,7 @@ export default function StudentOnboardingApp() {
                 {/* Locked Ngày sinh & Hết hạn */}
                 <div style={{ display: 'flex', gap: '8px' }}>
                   <div style={{ flex: 1 }}>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: '#94a3b8', marginBottom: '4px' }}>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: '#64748b', marginBottom: '4px', fontWeight: 700 }}>
                       <Lock size={12} color="#f59e0b" /> Ngày sinh
                     </label>
                     <input
@@ -1041,17 +1074,18 @@ export default function StudentOnboardingApp() {
                       style={{
                         width: '100%',
                         padding: '10px 12px',
-                        background: '#1e293b',
-                        border: '1px solid #334155',
+                        background: '#f1f5f9',
+                        border: '1px solid #e2e8f0',
                         borderRadius: '8px',
-                        color: '#94a3b8',
+                        color: '#475569',
                         fontSize: '14px',
                         cursor: 'not-allowed',
+                        fontWeight: 700,
                       }}
                     />
                   </div>
                   <div style={{ flex: 1 }}>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: '#94a3b8', marginBottom: '4px' }}>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: '#64748b', marginBottom: '4px', fontWeight: 700 }}>
                       <Lock size={12} color="#f59e0b" /> Hết hạn
                     </label>
                     <input
@@ -1061,12 +1095,13 @@ export default function StudentOnboardingApp() {
                       style={{
                         width: '100%',
                         padding: '10px 12px',
-                        background: '#1e293b',
-                        border: '1px solid #334155',
+                        background: '#f1f5f9',
+                        border: '1px solid #e2e8f0',
                         borderRadius: '8px',
-                        color: '#94a3b8',
+                        color: '#475569',
                         fontSize: '14px',
                         cursor: 'not-allowed',
+                        fontWeight: 700,
                       }}
                     />
                   </div>
@@ -1074,7 +1109,7 @@ export default function StudentOnboardingApp() {
 
                 {/* Editable Nơi thường trú (Luồng 3A) */}
                 <div>
-                  <label style={{ display: 'block', fontSize: '12px', color: '#38bdf8', marginBottom: '4px', fontWeight: 600 }}>
+                  <label style={{ display: 'block', fontSize: '12px', color: '#0284c7', marginBottom: '4px', fontWeight: 800 }}>
                     Nơi thường trú (Có thể sửa tay nếu OCR sai)
                   </label>
                   <textarea
@@ -1084,11 +1119,12 @@ export default function StudentOnboardingApp() {
                     style={{
                       width: '100%',
                       padding: '10px 12px',
-                      background: '#0f172a',
-                      border: '1px solid #0284c7',
+                      background: '#ffffff',
+                      border: '2px solid #0284c7',
                       borderRadius: '8px',
-                      color: '#f8fafc',
+                      color: '#0f172a',
                       fontSize: '13px',
+                      fontWeight: 600,
                       outline: 'none',
                     }}
                   />
@@ -1103,11 +1139,11 @@ export default function StudentOnboardingApp() {
                     flex: 1,
                     padding: '12px',
                     borderRadius: '10px',
-                    background: '#1e293b',
-                    color: '#94a3b8',
-                    border: '1px solid #334155',
+                    background: '#f1f5f9',
+                    color: '#334155',
+                    border: '1px solid #cbd5e1',
                     fontSize: '13px',
-                    fontWeight: 600,
+                    fontWeight: 700,
                     cursor: 'pointer',
                   }}
                 >
@@ -1126,6 +1162,7 @@ export default function StudentOnboardingApp() {
                     fontSize: '13px',
                     fontWeight: 700,
                     cursor: 'pointer',
+                    boxShadow: '0 4px 12px rgba(2, 132, 199, 0.3)',
                   }}
                 >
                   Xác nhận &amp; Tiếp tục
@@ -1138,47 +1175,48 @@ export default function StudentOnboardingApp() {
           {currentStep === 'S05' && (
             <div>
               <div style={{ marginBottom: '16px' }}>
-                <h2 style={{ fontSize: '18px', fontWeight: 700, color: '#f8fafc', marginBottom: '4px' }}>
+                <h2 style={{ fontSize: '18px', fontWeight: 800, color: '#0f172a', marginBottom: '4px' }}>
                   Xác thực khuôn mặt (Liveness)
                 </h2>
-                <p style={{ fontSize: '12px', color: '#94a3b8' }}>
-                  Bước 4/6 • So khớp chân dung với ảnh CCCD (Ngưỡng đạt ≥ 85%)
+                <p style={{ fontSize: '12px', color: '#64748b' }}>
+                  Bước 4/6 • So khớp chân dung người thật với ảnh trên CCCD (Ngưỡng đạt ≥ 85%)
                 </p>
               </div>
 
               {/* Sample Selfie Selector */}
               <div
                 style={{
-                  background: '#0f172a',
-                  borderRadius: '12px',
+                  background: '#f8fafc',
+                  borderRadius: '14px',
                   padding: '12px',
-                  border: '1px solid #334155',
+                  border: '1px solid #e2e8f0',
                   marginBottom: '16px',
                 }}
               >
-                <div style={{ fontSize: '12px', fontWeight: 600, color: '#38bdf8', marginBottom: '8px' }}>
-                  Chọn mẫu video/khuôn mặt kiểm thử:
+                <div style={{ fontSize: '12px', fontWeight: 800, color: '#0284c7', marginBottom: '8px' }}>
+                  Chọn mẫu ảnh chụp selfie chân thực:
                 </div>
                 <select
                   value={selectedSelfie}
                   onChange={(e) => setSelectedSelfie(e.target.value)}
                   style={{
                     width: '100%',
-                    padding: '8px 12px',
+                    padding: '10px 12px',
                     borderRadius: '8px',
-                    background: '#1e293b',
-                    color: '#f8fafc',
-                    border: '1px solid #475569',
+                    background: '#ffffff',
+                    color: '#0f172a',
+                    border: '1px solid #cbd5e1',
                     fontSize: '13px',
+                    fontWeight: 600,
                     outline: 'none',
                   }}
                 >
-                  <option value="S_score_95">Mẫu 1</option>
-                  <option value="S_score_85">Mẫu 2</option>
-                  <option value="S_score_84_9">Mẫu 3</option>
-                  <option value="S_score_80">Mẫu 4</option>
-                  <option value="S_score_79_9">Mẫu 5</option>
-                  <option value="S_liveness_fail">Mẫu 6</option>
+                  <option value="S_score_95">Mẫu 1: Trực diện sắc nét (Khớp P01 - 95.0%)</option>
+                  <option value="S_score_85">Mẫu 2: Ảnh selfie phòng chuẩn (85.0% - Ngưỡng)</option>
+                  <option value="S_score_84_9">Mẫu 3: Nghiêng góc nhẹ (84.9%)</option>
+                  <option value="S_score_80">Mẫu 4: Ánh sáng góc nghiêng (80.0%)</option>
+                  <option value="S_score_79_9">Mẫu 5: Ảnh tối / thiếu sáng (79.9%)</option>
+                  <option value="S_score_liveness_fail">Mẫu 6: Ảnh chụp qua màn hình (Liveness FAIL)</option>
                 </select>
               </div>
 
@@ -1186,16 +1224,17 @@ export default function StudentOnboardingApp() {
               <div
                 style={{
                   width: '100%',
-                  height: '240px',
-                  background: '#020617',
+                  height: '260px',
+                  background: '#0f172a',
                   borderRadius: '16px',
-                  border: '2px solid #38bdf8',
+                  border: '3px solid #0284c7',
                   position: 'relative',
                   overflow: 'hidden',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   marginBottom: '16px',
+                  boxShadow: '0 8px 20px rgba(2, 132, 199, 0.25)',
                 }}
               >
                 <img
@@ -1205,8 +1244,8 @@ export default function StudentOnboardingApp() {
                 />
               </div>
 
-              <div style={{ textAlign: 'center', fontSize: '12px', color: '#94a3b8', marginBottom: '16px' }}>
-                Số lần thử còn lại: <b style={{ color: faceAttemptsRemaining < 2 ? '#f43f5e' : '#10b981' }}>{faceAttemptsRemaining} / 3</b>
+              <div style={{ textAlign: 'center', fontSize: '12px', color: '#64748b', marginBottom: '16px', fontWeight: 600 }}>
+                Số lần thử còn lại: <b style={{ color: faceAttemptsRemaining < 2 ? '#ef4444' : '#10b981' }}>{faceAttemptsRemaining} / 3</b>
               </div>
 
               <button
@@ -1222,9 +1261,10 @@ export default function StudentOnboardingApp() {
                   fontSize: '15px',
                   border: 'none',
                   cursor: loading ? 'not-allowed' : 'pointer',
+                  boxShadow: '0 4px 12px rgba(2, 132, 199, 0.3)',
                 }}
               >
-                {loading ? 'Đang so khớp khuôn mặt...' : 'Bắt đầu xác thực khuôn mặt'}
+                {loading ? 'Đang so khớp sinh trắc học...' : 'Bắt đầu xác thực khuôn mặt'}
               </button>
             </div>
           )}
@@ -1233,11 +1273,11 @@ export default function StudentOnboardingApp() {
           {currentStep === 'S06' && (
             <div>
               <div style={{ marginBottom: '16px' }}>
-                <h2 style={{ fontSize: '18px', fontWeight: 700, color: '#f8fafc', marginBottom: '4px' }}>
+                <h2 style={{ fontSize: '18px', fontWeight: 800, color: '#0f172a', marginBottom: '4px' }}>
                   Tạo mật khẩu &amp; Hoàn tất
                 </h2>
-                <p style={{ fontSize: '12px', color: '#94a3b8' }}>
-                  Bước 5/6 • Thiết lập mật khẩu bảo mật cho tài khoản
+                <p style={{ fontSize: '12px', color: '#64748b' }}>
+                  Bước 5/6 • Thiết lập mật khẩu bảo mật cho tài khoản ngân hàng
                 </p>
               </div>
 
@@ -1245,29 +1285,29 @@ export default function StudentOnboardingApp() {
                 {/* Account Package Card */}
                 <div
                   style={{
-                    background: '#0f172a',
-                    border: '1px solid #0284c7',
-                    borderRadius: '12px',
-                    padding: '12px',
+                    background: '#f0f9ff',
+                    border: '1px solid #bae6fd',
+                    borderRadius: '14px',
+                    padding: '14px',
                   }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ fontSize: '13px', fontWeight: 600, color: '#f8fafc' }}>
+                    <span style={{ fontSize: '14px', fontWeight: 800, color: '#0369a1' }}>
                       Gói tài khoản NeoStandard
                     </span>
-                    <span style={{ fontSize: '11px', background: '#0284c7', color: '#fff', padding: '2px 8px', borderRadius: '4px' }}>
+                    <span style={{ fontSize: '11px', background: '#0284c7', color: '#fff', padding: '3px 8px', borderRadius: '6px', fontWeight: 700 }}>
                       Miễn phí
                     </span>
                   </div>
-                  <div style={{ fontSize: '11px', color: '#94a3b8', marginTop: '4px' }}>
-                    Số ngẫu nhiên • Hạn mức chuyển khoản 100.000.000đ/tháng
+                  <div style={{ fontSize: '12px', color: '#0284c7', marginTop: '4px', fontWeight: 500 }}>
+                    Số tài khoản ngẫu nhiên • Hạn mức chuyển khoản 100.000.000đ/tháng
                   </div>
                 </div>
 
                 {/* Password field */}
                 <div>
-                  <label style={{ display: 'block', fontSize: '12px', color: '#cbd5e1', marginBottom: '4px', fontWeight: 500 }}>
-                    Mật khẩu đăng nhập <span style={{ color: '#f43f5e' }}>*</span>
+                  <label style={{ display: 'block', fontSize: '12px', color: '#334155', marginBottom: '4px', fontWeight: 700 }}>
+                    Mật khẩu đăng nhập <span style={{ color: '#ef4444' }}>*</span>
                   </label>
                   <div style={{ position: 'relative' }}>
                     <input
@@ -1278,12 +1318,13 @@ export default function StudentOnboardingApp() {
                       style={{
                         width: '100%',
                         padding: '10px 38px 10px 12px',
-                        background: '#0f172a',
-                        border: '1px solid #334155',
+                        background: '#ffffff',
+                        border: '1px solid #cbd5e1',
                         borderRadius: '8px',
-                        color: '#f8fafc',
+                        color: '#0f172a',
                         fontSize: '14px',
                         outline: 'none',
+                        fontWeight: 600,
                       }}
                       required
                     />
@@ -1307,8 +1348,8 @@ export default function StudentOnboardingApp() {
 
                 {/* Confirm Password */}
                 <div>
-                  <label style={{ display: 'block', fontSize: '12px', color: '#cbd5e1', marginBottom: '4px', fontWeight: 500 }}>
-                    Xác nhận mật khẩu <span style={{ color: '#f43f5e' }}>*</span>
+                  <label style={{ display: 'block', fontSize: '12px', color: '#334155', marginBottom: '4px', fontWeight: 700 }}>
+                    Xác nhận mật khẩu <span style={{ color: '#ef4444' }}>*</span>
                   </label>
                   <input
                     type="password"
@@ -1318,12 +1359,13 @@ export default function StudentOnboardingApp() {
                     style={{
                       width: '100%',
                       padding: '10px 12px',
-                      background: '#0f172a',
-                      border: '1px solid #334155',
+                      background: '#ffffff',
+                      border: '1px solid #cbd5e1',
                       borderRadius: '8px',
-                      color: '#f8fafc',
+                      color: '#0f172a',
                       fontSize: '14px',
                       outline: 'none',
+                      fontWeight: 600,
                     }}
                     required
                   />
@@ -1336,12 +1378,12 @@ export default function StudentOnboardingApp() {
                     id="terms-check"
                     checked={termsAccepted}
                     onChange={(e) => setTermsAccepted(e.target.checked)}
-                    style={{ marginTop: '2px' }}
+                    style={{ marginTop: '3px' }}
                   />
-                  <label htmlFor="terms-check" style={{ fontSize: '11px', color: '#94a3b8', lineHeight: 1.4 }}>
+                  <label htmlFor="terms-check" style={{ fontSize: '12px', color: '#64748b', lineHeight: 1.4 }}>
                     Tôi đồng ý với{' '}
-                    <span style={{ color: '#38bdf8', textDecoration: 'underline' }}>
-                      Điều khoản &amp; Điều kiện dịch vụ ngân hàng điện tử NeoBank
+                    <span style={{ color: '#0284c7', textDecoration: 'underline', fontWeight: 600 }}>
+                      Điều khoản &amp; Điều kiện dịch vụ ngân hàng số NeoBank
                     </span>
                   </label>
                 </div>
@@ -1360,6 +1402,7 @@ export default function StudentOnboardingApp() {
                       fontSize: '15px',
                       border: 'none',
                       cursor: loading ? 'not-allowed' : 'pointer',
+                      boxShadow: '0 4px 12px rgba(2, 132, 199, 0.3)',
                     }}
                   >
                     {loading ? 'Đang khởi tạo tài khoản...' : 'Xác nhận mở tài khoản'}
@@ -1374,32 +1417,33 @@ export default function StudentOnboardingApp() {
             <div style={{ textAlign: 'center', paddingTop: '16px' }}>
               <div
                 style={{
-                  width: '64px',
-                  height: '64px',
+                  width: '68px',
+                  height: '68px',
                   borderRadius: '50%',
-                  background: 'rgba(16, 185, 129, 0.2)',
+                  background: '#ecfdf5',
                   border: '2px solid #10b981',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   margin: '0 auto 16px',
+                  boxShadow: '0 8px 20px rgba(16, 185, 129, 0.25)',
                 }}
               >
-                <CheckCircle2 size={36} color="#10b981" />
+                <CheckCircle2 size={40} color="#10b981" />
               </div>
 
-              <h2 style={{ fontSize: '20px', fontWeight: 800, color: '#f8fafc', marginBottom: '6px' }}>
+              <h2 style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a', marginBottom: '6px' }}>
                 Chúc Mừng Quý Khách!
               </h2>
-              <p style={{ fontSize: '13px', color: '#94a3b8', marginBottom: '24px' }}>
+              <p style={{ fontSize: '13px', color: '#64748b', marginBottom: '24px' }}>
                 Tài khoản thanh toán CASA đã được kích hoạt thành công trên hệ thống Core Banking.
               </p>
 
               {/* Account summary card */}
               <div
                 style={{
-                  background: '#0f172a',
-                  border: '1px solid #334155',
+                  background: '#f8fafc',
+                  border: '1px solid #e2e8f0',
                   borderRadius: '16px',
                   padding: '16px',
                   textAlign: 'left',
@@ -1407,30 +1451,32 @@ export default function StudentOnboardingApp() {
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '12px',
+                  boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: '12px', color: '#94a3b8' }}>Mã khách hàng (CIF):</span>
-                  <span style={{ fontSize: '15px', fontWeight: 700, color: '#38bdf8' }}>
+                  <span style={{ fontSize: '12px', color: '#64748b', fontWeight: 600 }}>Mã khách hàng (CIF):</span>
+                  <span style={{ fontSize: '15px', fontWeight: 800, color: '#0284c7' }}>
                     {creationResult.cifNumber}
                   </span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: '12px', color: '#94a3b8' }}>Số tài khoản CASA:</span>
-                  <span style={{ fontSize: '15px', fontWeight: 700, color: '#f8fafc' }}>
+                  <span style={{ fontSize: '12px', color: '#64748b', fontWeight: 600 }}>Số tài khoản CASA:</span>
+                  <span style={{ fontSize: '15px', fontWeight: 800, color: '#0f172a' }}>
                     {creationResult.accountNumber}
                   </span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: '12px', color: '#94a3b8' }}>Trạng thái:</span>
+                  <span style={{ fontSize: '12px', color: '#64748b', fontWeight: 600 }}>Trạng thái tài khoản:</span>
                   <span
                     style={{
                       fontSize: '11px',
-                      fontWeight: 700,
-                      color: '#10b981',
-                      background: 'rgba(16, 185, 129, 0.15)',
+                      fontWeight: 800,
+                      color: '#065f46',
+                      background: '#ecfdf5',
+                      border: '1px solid #a7f3d0',
                       padding: '3px 8px',
-                      borderRadius: '4px',
+                      borderRadius: '6px',
                     }}
                   >
                     {creationResult.status}
@@ -1438,7 +1484,7 @@ export default function StudentOnboardingApp() {
                 </div>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 <button
                   onClick={() => alert('Màn hình Đăng nhập (Stub)')}
                   style={{
@@ -1451,6 +1497,7 @@ export default function StudentOnboardingApp() {
                     fontSize: '14px',
                     border: 'none',
                     cursor: 'pointer',
+                    boxShadow: '0 4px 12px rgba(2, 132, 199, 0.3)',
                   }}
                 >
                   Đăng nhập ứng dụng
@@ -1464,11 +1511,11 @@ export default function StudentOnboardingApp() {
                     width: '100%',
                     padding: '12px',
                     borderRadius: '10px',
-                    background: '#1e293b',
-                    color: '#94a3b8',
-                    fontWeight: 600,
+                    background: '#f1f5f9',
+                    color: '#475569',
+                    fontWeight: 700,
                     fontSize: '13px',
-                    border: '1px solid #334155',
+                    border: '1px solid #cbd5e1',
                     cursor: 'pointer',
                   }}
                 >
@@ -1486,7 +1533,7 @@ export default function StudentOnboardingApp() {
                   width: '64px',
                   height: '64px',
                   borderRadius: '50%',
-                  background: 'rgba(245, 158, 11, 0.2)',
+                  background: '#fffbeb',
                   border: '2px solid #f59e0b',
                   display: 'flex',
                   alignItems: 'center',
@@ -1497,10 +1544,10 @@ export default function StudentOnboardingApp() {
                 <User size={36} color="#f59e0b" />
               </div>
 
-              <h2 style={{ fontSize: '18px', fontWeight: 800, color: '#f8fafc', marginBottom: '8px' }}>
+              <h2 style={{ fontSize: '18px', fontWeight: 800, color: '#0f172a', marginBottom: '8px' }}>
                 Bạn Đã Có Tài Khoản
               </h2>
-              <p style={{ fontSize: '13px', color: '#94a3b8', lineHeight: 1.5, marginBottom: '28px' }}>
+              <p style={{ fontSize: '13px', color: '#64748b', lineHeight: 1.5, marginBottom: '28px' }}>
                 Số CCCD này đã được cấp mã CIF tại NeoBank. Vui lòng đăng nhập hoặc sử dụng chức năng Quên mật khẩu để lấy lại quyền truy cập.
               </p>
 
@@ -1517,6 +1564,7 @@ export default function StudentOnboardingApp() {
                     fontSize: '14px',
                     border: 'none',
                     cursor: 'pointer',
+                    boxShadow: '0 4px 12px rgba(2, 132, 199, 0.3)',
                   }}
                 >
                   Quên mật khẩu
@@ -1527,11 +1575,11 @@ export default function StudentOnboardingApp() {
                     width: '100%',
                     padding: '12px',
                     borderRadius: '10px',
-                    background: '#1e293b',
-                    color: '#94a3b8',
-                    fontWeight: 600,
+                    background: '#f1f5f9',
+                    color: '#475569',
+                    fontWeight: 700,
                     fontSize: '13px',
-                    border: '1px solid #334155',
+                    border: '1px solid #cbd5e1',
                     cursor: 'pointer',
                   }}
                 >
@@ -1546,8 +1594,8 @@ export default function StudentOnboardingApp() {
         <div
           style={{
             padding: '10px 16px',
-            background: '#0f172a',
-            borderTop: '1px solid #1e293b',
+            background: '#f8fafc',
+            borderTop: '1px solid #e2e8f0',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
@@ -1555,7 +1603,7 @@ export default function StudentOnboardingApp() {
             color: '#64748b',
           }}
         >
-          <span>Môi trường: <b>SIT</b></span>
+          <span>Môi trường: <b style={{ color: '#0284c7' }}>SIT</b></span>
           <span>Ngày hệ thống: <b>{formatDisplayDate(systemDate)}</b></span>
         </div>
 
@@ -1568,7 +1616,7 @@ export default function StudentOnboardingApp() {
               left: 0,
               right: 0,
               bottom: 0,
-              background: 'rgba(3, 7, 18, 0.85)',
+              background: 'rgba(15, 23, 42, 0.45)',
               zIndex: 50,
               display: 'flex',
               flexDirection: 'column',
@@ -1577,10 +1625,11 @@ export default function StudentOnboardingApp() {
           >
             <div
               style={{
-                background: '#1e293b',
+                background: '#ffffff',
                 borderTopLeftRadius: '24px',
                 borderTopRightRadius: '24px',
-                border: '1px solid #334155',
+                border: '1px solid #e2e8f0',
+                boxShadow: '0 -10px 25px rgba(0,0,0,0.1)',
                 maxHeight: '75%',
                 display: 'flex',
                 flexDirection: 'column',
@@ -1590,28 +1639,29 @@ export default function StudentOnboardingApp() {
               <div
                 style={{
                   padding: '14px 18px',
-                  borderBottom: '1px solid #334155',
+                  borderBottom: '1px solid #e2e8f0',
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
+                  background: '#f8fafc',
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <MessageSquare size={16} color="#38bdf8" />
-                  <span style={{ fontSize: '13px', fontWeight: 700, color: '#f8fafc' }}>
+                  <MessageSquare size={16} color="#0284c7" />
+                  <span style={{ fontSize: '13px', fontWeight: 800, color: '#0f172a' }}>
                     Hộp thư SMS Giả lập
                   </span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <button
                     onClick={fetchSmsMessages}
-                    style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}
+                    style={{ background: 'none', border: 'none', color: '#64748b', cursor: 'pointer' }}
                   >
                     <RefreshCw size={14} />
                   </button>
                   <button
                     onClick={() => setSmsDrawerOpen(false)}
-                    style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}
+                    style={{ background: 'none', border: 'none', color: '#64748b', cursor: 'pointer' }}
                   >
                     <X size={16} />
                   </button>
@@ -1620,12 +1670,11 @@ export default function StudentOnboardingApp() {
 
               <div style={{ padding: '14px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {smsList.length === 0 ? (
-                  <div style={{ textAlign: 'center', color: '#64748b', fontSize: '12px', padding: '20px' }}>
+                  <div style={{ textAlign: 'center', color: '#94a3b8', fontSize: '12px', padding: '20px' }}>
                     Chưa có tin nhắn SMS nào được gửi.
                   </div>
                 ) : (
                   smsList.map((msg) => {
-                    // Extract OTP 6 digits if present
                     const match = msg.content.match(/\b\d{6}\b/);
                     const foundOtp = match ? match[0] : null;
 
@@ -1633,18 +1682,18 @@ export default function StudentOnboardingApp() {
                       <div
                         key={msg.id}
                         style={{
-                          background: '#0f172a',
-                          border: '1px solid #334155',
+                          background: '#f8fafc',
+                          border: '1px solid #e2e8f0',
                           borderRadius: '10px',
                           padding: '10px',
                           fontSize: '12px',
                         }}
                       >
                         <div style={{ display: 'flex', justifyContent: 'space-between', color: '#64748b', fontSize: '10px', marginBottom: '4px' }}>
-                          <span>Gửi tới: {msg.phoneNumber}</span>
+                          <span>Gửi tới: <b>{msg.phoneNumber}</b></span>
                           <span>{new Date(msg.sentAt).toLocaleTimeString()}</span>
                         </div>
-                        <div style={{ color: '#cbd5e1', lineHeight: 1.4 }}>{msg.content}</div>
+                        <div style={{ color: '#0f172a', lineHeight: 1.4, fontWeight: 500 }}>{msg.content}</div>
 
                         {foundOtp && (
                           <div style={{ marginTop: '8px', display: 'flex', justifyContent: 'flex-end' }}>
@@ -1658,13 +1707,14 @@ export default function StudentOnboardingApp() {
                                 border: 'none',
                                 color: '#fff',
                                 borderRadius: '6px',
-                                padding: '4px 8px',
+                                padding: '5px 10px',
                                 fontSize: '11px',
-                                fontWeight: 600,
+                                fontWeight: 700,
                                 cursor: 'pointer',
                                 display: 'flex',
                                 alignItems: 'center',
                                 gap: '4px',
+                                boxShadow: '0 2px 4px rgba(2, 132, 199, 0.25)',
                               }}
                             >
                               <Copy size={11} /> Điền mã OTP {foundOtp}

@@ -217,7 +217,7 @@ export default function TrainerPanel() {
       <div
         style={{
           minHeight: '100vh',
-          background: '#030712',
+          background: '#f8fafc',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -228,32 +228,33 @@ export default function TrainerPanel() {
           style={{
             maxWidth: '380px',
             width: '100%',
-            background: '#0f172a',
-            border: '1px solid #334155',
-            borderRadius: '16px',
-            padding: '28px',
+            background: '#ffffff',
+            border: '1px solid #e2e8f0',
+            borderRadius: '20px',
+            padding: '32px 24px',
             textAlign: 'center',
+            boxShadow: '0 10px 25px -5px rgba(15, 23, 42, 0.08)',
           }}
         >
           <div
             style={{
-              width: '56px',
-              height: '56px',
+              width: '60px',
+              height: '60px',
               borderRadius: '16px',
-              background: 'rgba(2, 132, 199, 0.2)',
-              border: '1px solid #0284c7',
+              background: '#f0f9ff',
+              border: '1px solid #bae6fd',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               margin: '0 auto 16px',
             }}
           >
-            <Lock size={28} color="#38bdf8" />
+            <Lock size={28} color="#0284c7" />
           </div>
-          <h2 style={{ fontSize: '18px', fontWeight: 700, color: '#f8fafc', marginBottom: '6px' }}>
+          <h2 style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a', marginBottom: '6px' }}>
             Trainer Control Panel
           </h2>
-          <p style={{ fontSize: '12px', color: '#94a3b8', marginBottom: '20px' }}>
+          <p style={{ fontSize: '13px', color: '#64748b', marginBottom: '22px' }}>
             Nhập mã PIN giảng viên để quản lý sandbox học viên và điều khiển giả lập
           </p>
 
@@ -266,21 +267,22 @@ export default function TrainerPanel() {
               style={{
                 width: '100%',
                 padding: '12px',
-                background: '#020617',
-                border: '1px solid #334155',
-                borderRadius: '8px',
-                color: '#f8fafc',
-                fontSize: '16px',
+                background: '#f8fafc',
+                border: '1px solid #cbd5e1',
+                borderRadius: '10px',
+                color: '#0f172a',
+                fontSize: '18px',
                 textAlign: 'center',
-                letterSpacing: '4px',
+                letterSpacing: '6px',
                 outline: 'none',
+                fontWeight: 700,
               }}
               autoFocus
               required
             />
 
             {loginError && (
-              <div style={{ color: '#f43f5e', fontSize: '12px', textAlign: 'center' }}>
+              <div style={{ color: '#e11d48', fontSize: '12px', textAlign: 'center', fontWeight: 600 }}>
                 {loginError}
               </div>
             )}
@@ -289,13 +291,14 @@ export default function TrainerPanel() {
               type="submit"
               style={{
                 padding: '12px',
-                borderRadius: '8px',
-                background: '#0284c7',
+                borderRadius: '10px',
+                background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)',
                 color: '#fff',
                 fontWeight: 700,
                 fontSize: '14px',
                 border: 'none',
                 cursor: 'pointer',
+                boxShadow: '0 4px 12px rgba(2, 132, 199, 0.3)',
               }}
             >
               Mở khóa Quản trị
@@ -309,7 +312,7 @@ export default function TrainerPanel() {
   const origin = typeof window !== 'undefined' ? window.location.origin : '';
 
   return (
-    <div style={{ minHeight: '100vh', background: '#090d16', color: '#f8fafc', padding: '24px' }}>
+    <div style={{ minHeight: '100vh', background: '#f8fafc', color: '#0f172a', padding: '28px 16px' }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         {/* Toast notification */}
         {notification && (
@@ -318,20 +321,21 @@ export default function TrainerPanel() {
               position: 'fixed',
               top: '20px',
               right: '20px',
-              background: '#065f46',
-              border: '1px solid #10b981',
-              color: '#d1fae5',
-              padding: '10px 18px',
-              borderRadius: '8px',
+              background: '#ecfdf5',
+              border: '1px solid #a7f3d0',
+              color: '#065f46',
+              padding: '12px 20px',
+              borderRadius: '10px',
               fontSize: '13px',
+              fontWeight: 700,
               zIndex: 100,
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
-              boxShadow: '0 10px 15px -3px rgba(0,0,0,0.5)',
+              boxShadow: '0 10px 20px -5px rgba(0,0,0,0.1)',
             }}
           >
-            <CheckCircle2 size={16} />
+            <CheckCircle2 size={18} color="#10b981" />
             {notification}
           </div>
         )}
@@ -339,12 +343,12 @@ export default function TrainerPanel() {
         {/* Top Header */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
           <div>
-            <h1 style={{ fontSize: '22px', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <ShieldAlert color="#38bdf8" />
+            <h1 style={{ fontSize: '22px', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '8px', color: '#0f172a' }}>
+              <ShieldAlert color="#0284c7" />
               NeoBank Trainer Management Panel
             </h1>
-            <p style={{ fontSize: '13px', color: '#94a3b8', marginTop: '4px' }}>
-              Quản trị sandbox học viên • Chuyển đổi Profile • Đổi ngày hệ thống • Giả lập mạng
+            <p style={{ fontSize: '13px', color: '#64748b', marginTop: '4px' }}>
+              Quản trị sandbox học viên • Chuyển đổi Profile • Đổi ngày hệ thống • Giả lập ngoại lệ mạng
             </p>
           </div>
           <button
@@ -353,45 +357,48 @@ export default function TrainerPanel() {
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
-              padding: '6px 12px',
-              background: '#1e293b',
-              border: '1px solid #334155',
-              borderRadius: '6px',
-              color: '#94a3b8',
+              padding: '8px 14px',
+              background: '#ffffff',
+              border: '1px solid #cbd5e1',
+              borderRadius: '8px',
+              color: '#64748b',
               fontSize: '12px',
+              fontWeight: 600,
               cursor: 'pointer',
+              boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
             }}
           >
-            <LogOut size={13} /> Đăng xuất
+            <LogOut size={14} /> Đăng xuất
           </button>
         </div>
 
         {/* Sandbox Selector Bar */}
         <div
           style={{
-            background: '#0f172a',
-            border: '1px solid #334155',
-            borderRadius: '12px',
+            background: '#ffffff',
+            border: '1px solid #e2e8f0',
+            borderRadius: '14px',
             padding: '16px',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
             marginBottom: '20px',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.03)',
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <span style={{ fontSize: '13px', fontWeight: 600, color: '#94a3b8' }}>Chọn Sandbox:</span>
+            <span style={{ fontSize: '13px', fontWeight: 700, color: '#475569' }}>Chọn Sandbox:</span>
             <select
               value={selectedSandboxId}
               onChange={(e) => setSelectedSandboxId(e.target.value)}
               style={{
                 padding: '8px 14px',
-                background: '#1e293b',
-                border: '1px solid #475569',
+                background: '#f8fafc',
+                border: '1px solid #cbd5e1',
                 borderRadius: '8px',
-                color: '#f8fafc',
+                color: '#0f172a',
                 fontSize: '14px',
-                fontWeight: 600,
+                fontWeight: 700,
                 outline: 'none',
               }}
             >
@@ -412,12 +419,13 @@ export default function TrainerPanel() {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '6px',
-                padding: '6px 12px',
-                background: '#1e293b',
-                border: '1px solid #334155',
-                borderRadius: '6px',
-                color: '#38bdf8',
+                padding: '7px 12px',
+                background: '#f0f9ff',
+                border: '1px solid #bae6fd',
+                borderRadius: '8px',
+                color: '#0284c7',
                 fontSize: '12px',
+                fontWeight: 700,
                 cursor: 'pointer',
               }}
             >
@@ -431,22 +439,23 @@ export default function TrainerPanel() {
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
-              padding: '8px 14px',
-              background: '#0284c7',
+              padding: '8px 16px',
+              background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)',
               color: '#fff',
               border: 'none',
               borderRadius: '8px',
               fontSize: '13px',
-              fontWeight: 600,
+              fontWeight: 700,
               cursor: 'pointer',
+              boxShadow: '0 2px 4px rgba(2, 132, 199, 0.25)',
             }}
           >
-            <Plus size={14} /> Tạo Sandbox Mới
+            <Plus size={15} /> Tạo Sandbox Mới
           </button>
         </div>
 
         {/* Navigation Tabs */}
-        <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', borderBottom: '1px solid #1e293b', paddingBottom: '8px' }}>
+        <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', borderBottom: '1px solid #e2e8f0', paddingBottom: '10px' }}>
           <button
             onClick={() => setActiveTab('settings')}
             style={{
@@ -455,12 +464,13 @@ export default function TrainerPanel() {
               gap: '6px',
               padding: '8px 16px',
               borderRadius: '8px',
-              background: activeTab === 'settings' ? '#0284c7' : 'transparent',
-              color: activeTab === 'settings' ? '#fff' : '#94a3b8',
-              border: 'none',
-              fontWeight: 600,
+              background: activeTab === 'settings' ? '#0284c7' : '#ffffff',
+              color: activeTab === 'settings' ? '#fff' : '#475569',
+              border: activeTab === 'settings' ? 'none' : '1px solid #cbd5e1',
+              fontWeight: 700,
               fontSize: '13px',
               cursor: 'pointer',
+              boxShadow: activeTab === 'settings' ? '0 2px 4px rgba(2, 132, 199, 0.25)' : 'none',
             }}
           >
             <Sliders size={14} /> Điều khiển &amp; Giả lập
@@ -473,12 +483,13 @@ export default function TrainerPanel() {
               gap: '6px',
               padding: '8px 16px',
               borderRadius: '8px',
-              background: activeTab === 'tables' ? '#0284c7' : 'transparent',
-              color: activeTab === 'tables' ? '#fff' : '#94a3b8',
-              border: 'none',
-              fontWeight: 600,
+              background: activeTab === 'tables' ? '#0284c7' : '#ffffff',
+              color: activeTab === 'tables' ? '#fff' : '#475569',
+              border: activeTab === 'tables' ? 'none' : '1px solid #cbd5e1',
+              fontWeight: 700,
               fontSize: '13px',
               cursor: 'pointer',
+              boxShadow: activeTab === 'tables' ? '0 2px 4px rgba(2, 132, 199, 0.25)' : 'none',
             }}
           >
             <Database size={14} /> Dữ liệu các Bảng (Table Viewer)
@@ -491,12 +502,13 @@ export default function TrainerPanel() {
               gap: '6px',
               padding: '8px 16px',
               borderRadius: '8px',
-              background: activeTab === 'logs' ? '#0284c7' : 'transparent',
-              color: activeTab === 'logs' ? '#fff' : '#94a3b8',
-              border: 'none',
-              fontWeight: 600,
+              background: activeTab === 'logs' ? '#0284c7' : '#ffffff',
+              color: activeTab === 'logs' ? '#fff' : '#475569',
+              border: activeTab === 'logs' ? 'none' : '1px solid #cbd5e1',
+              fontWeight: 700,
               fontSize: '13px',
               cursor: 'pointer',
+              boxShadow: activeTab === 'logs' ? '0 2px 4px rgba(2, 132, 199, 0.25)' : 'none',
             }}
           >
             <List size={14} /> Nhật ký API (API Logs)
@@ -509,17 +521,18 @@ export default function TrainerPanel() {
             {/* Box 1: Reset Database */}
             <div
               style={{
-                background: '#0f172a',
-                border: '1px solid #334155',
+                background: '#ffffff',
+                border: '1px solid #e2e8f0',
                 borderRadius: '16px',
                 padding: '20px',
+                boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
               }}
             >
-              <h3 style={{ fontSize: '15px', fontWeight: 700, color: '#f8fafc', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <RotateCcw size={18} color="#38bdf8" />
+              <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#0f172a', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <RotateCcw size={18} color="#0284c7" />
                 Khôi phục Dữ liệu Sandbox
               </h3>
-              <p style={{ fontSize: '12px', color: '#94a3b8', lineHeight: 1.5, marginBottom: '16px' }}>
+              <p style={{ fontSize: '12px', color: '#64748b', lineHeight: 1.5, marginBottom: '16px' }}>
                 Xóa các hồ sơ tạm, mở lại các số điện thoại bị khóa và nạp lại 3 khách hàng mẫu (1 khách hàng sở hữu SĐT 0911111111, 1 khách hàng sở hữu CCCD 001090000003). Thời gian thực thi &lt; 3 giây.
               </p>
               <button
@@ -528,13 +541,14 @@ export default function TrainerPanel() {
                 style={{
                   width: '100%',
                   padding: '12px',
-                  borderRadius: '8px',
-                  background: '#f43f5e',
+                  borderRadius: '10px',
+                  background: '#ef4444',
                   color: '#fff',
                   border: 'none',
                   fontWeight: 700,
                   fontSize: '13px',
                   cursor: loading ? 'not-allowed' : 'pointer',
+                  boxShadow: '0 2px 6px rgba(239, 68, 68, 0.25)',
                 }}
               >
                 {loading ? 'Đang khôi phục...' : `Reset Dữ liệu Sandbox ${selectedSandboxId}`}
@@ -544,18 +558,19 @@ export default function TrainerPanel() {
             {/* Box 2: Profile Switcher */}
             <div
               style={{
-                background: '#0f172a',
-                border: '1px solid #334155',
+                background: '#ffffff',
+                border: '1px solid #e2e8f0',
                 borderRadius: '16px',
                 padding: '20px',
+                boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
               }}
             >
-              <h3 style={{ fontSize: '15px', fontWeight: 700, color: '#f8fafc', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#0f172a', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Sliders size={18} color="#10b981" />
                 Chế độ Hoạt động (Profile)
               </h3>
-              <p style={{ fontSize: '12px', color: '#94a3b8', lineHeight: 1.5, marginBottom: '16px' }}>
-                Chuyển đổi giữa chế độ đào tạo (chứa 13 hành vi lỗi để học viên tìm) và chế độ chuẩn ngân hàng.
+              <p style={{ fontSize: '12px', color: '#64748b', lineHeight: 1.5, marginBottom: '16px' }}>
+                Chuyển đổi giữa chế độ đào tạo (chứa 13 hành vi để học viên phát hiện) và chế độ chuẩn ngân hàng.
               </p>
 
               <div style={{ display: 'flex', gap: '10px' }}>
@@ -564,32 +579,32 @@ export default function TrainerPanel() {
                   style={{
                     flex: 1,
                     padding: '12px',
-                    borderRadius: '8px',
-                    background: currentSettings.profile === 'training' ? '#0284c7' : '#1e293b',
-                    border: currentSettings.profile === 'training' ? '2px solid #38bdf8' : '1px solid #334155',
-                    color: currentSettings.profile === 'training' ? '#fff' : '#94a3b8',
-                    fontWeight: 700,
+                    borderRadius: '10px',
+                    background: currentSettings.profile === 'training' ? '#0284c7' : '#f8fafc',
+                    border: currentSettings.profile === 'training' ? '2px solid #0284c7' : '1px solid #cbd5e1',
+                    color: currentSettings.profile === 'training' ? '#fff' : '#475569',
+                    fontWeight: 800,
                     fontSize: '13px',
                     cursor: 'pointer',
                   }}
                 >
-                  Training
+                  Training Mode
                 </button>
                 <button
                   onClick={() => handleSwitchProfile('reference')}
                   style={{
                     flex: 1,
                     padding: '12px',
-                    borderRadius: '8px',
-                    background: currentSettings.profile === 'reference' ? '#10b981' : '#1e293b',
-                    border: currentSettings.profile === 'reference' ? '2px solid #34d399' : '1px solid #334155',
-                    color: currentSettings.profile === 'reference' ? '#fff' : '#94a3b8',
-                    fontWeight: 700,
+                    borderRadius: '10px',
+                    background: currentSettings.profile === 'reference' ? '#10b981' : '#f8fafc',
+                    border: currentSettings.profile === 'reference' ? '2px solid #10b981' : '1px solid #cbd5e1',
+                    color: currentSettings.profile === 'reference' ? '#fff' : '#475569',
+                    fontWeight: 800,
                     fontSize: '13px',
                     cursor: 'pointer',
                   }}
                 >
-                  Reference
+                  Reference Mode
                 </button>
               </div>
             </div>
@@ -597,17 +612,18 @@ export default function TrainerPanel() {
             {/* Box 3: Simulated Date */}
             <div
               style={{
-                background: '#0f172a',
-                border: '1px solid #334155',
+                background: '#ffffff',
+                border: '1px solid #e2e8f0',
                 borderRadius: '16px',
                 padding: '20px',
+                boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
               }}
             >
-              <h3 style={{ fontSize: '15px', fontWeight: 700, color: '#f8fafc', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#0f172a', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Calendar size={18} color="#f59e0b" />
                 Ngày Hệ Thống Giả Lập
               </h3>
-              <p style={{ fontSize: '12px', color: '#94a3b8', lineHeight: 1.5, marginBottom: '16px' }}>
+              <p style={{ fontSize: '12px', color: '#64748b', lineHeight: 1.5, marginBottom: '16px' }}>
                 Tác động trực tiếp đến logic tính tuổi (BR-101) và kiểm tra hạn sử dụng CCCD (BR-102) mà không ảnh hưởng OTP 60s.
               </p>
 
@@ -619,23 +635,25 @@ export default function TrainerPanel() {
                   style={{
                     flex: 1,
                     padding: '10px 12px',
-                    background: '#020617',
-                    border: '1px solid #334155',
+                    background: '#f8fafc',
+                    border: '1px solid #cbd5e1',
                     borderRadius: '8px',
-                    color: '#f8fafc',
+                    color: '#0f172a',
                     fontSize: '14px',
                     outline: 'none',
+                    fontWeight: 700,
                   }}
                 />
                 <button
                   onClick={() => handleUpdateDate('2026-11-23')}
                   style={{
                     padding: '10px 14px',
-                    background: '#1e293b',
-                    border: '1px solid #334155',
+                    background: '#f1f5f9',
+                    border: '1px solid #cbd5e1',
                     borderRadius: '8px',
-                    color: '#94a3b8',
+                    color: '#475569',
                     fontSize: '12px',
+                    fontWeight: 600,
                     cursor: 'pointer',
                   }}
                 >
@@ -647,20 +665,21 @@ export default function TrainerPanel() {
             {/* Box 4: Network & System Toggles */}
             <div
               style={{
-                background: '#0f172a',
-                border: '1px solid #334155',
+                background: '#ffffff',
+                border: '1px solid #e2e8f0',
                 borderRadius: '16px',
                 padding: '20px',
+                boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
               }}
             >
-              <h3 style={{ fontSize: '15px', fontWeight: 700, color: '#f8fafc', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Wifi size={18} color="#c084fc" />
+              <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#0f172a', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Wifi size={18} color="#8b5cf6" />
                 Giả Lập Ngoại Lệ Mạng &amp; Core
               </h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                 <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '13px', cursor: 'pointer' }}>
                   <div>
-                    <div style={{ color: '#cbd5e1', fontWeight: 600 }}>Mất kết nối sau khi Core commit (6A / D06)</div>
+                    <div style={{ color: '#0f172a', fontWeight: 700 }}>Mất kết nối sau khi Core commit (6A / D06)</div>
                     <div style={{ fontSize: '11px', color: '#64748b' }}>Simulate timeout ngay sau khi Core tạo CIF</div>
                   </div>
                   <input
@@ -673,7 +692,7 @@ export default function TrainerPanel() {
 
                 <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '13px', cursor: 'pointer' }}>
                   <div>
-                    <div style={{ color: '#cbd5e1', fontWeight: 600 }}>Core Banking ngừng phản hồi (EKYC-99)</div>
+                    <div style={{ color: '#0f172a', fontWeight: 700 }}>Core Banking ngừng phản hồi (EKYC-99)</div>
                     <div style={{ fontSize: '11px', color: '#64748b' }}>Trả về mã lỗi 500 EKYC-99 ở bước cuối</div>
                   </div>
                   <input
@@ -697,13 +716,15 @@ export default function TrainerPanel() {
                   key={tName}
                   onClick={() => loadTableData(tName)}
                   style={{
-                    padding: '6px 12px',
-                    borderRadius: '6px',
-                    background: selectedTable === tName ? '#0284c7' : '#1e293b',
-                    color: selectedTable === tName ? '#fff' : '#cbd5e1',
-                    border: '1px solid #334155',
+                    padding: '8px 14px',
+                    borderRadius: '8px',
+                    background: selectedTable === tName ? '#0284c7' : '#ffffff',
+                    color: selectedTable === tName ? '#fff' : '#334155',
+                    border: selectedTable === tName ? 'none' : '1px solid #cbd5e1',
                     fontSize: '12px',
+                    fontWeight: 700,
                     cursor: 'pointer',
+                    boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
                   }}
                 >
                   {tName}
@@ -713,17 +734,18 @@ export default function TrainerPanel() {
 
             <div
               style={{
-                background: '#0f172a',
-                border: '1px solid #334155',
-                borderRadius: '12px',
+                background: '#ffffff',
+                border: '1px solid #e2e8f0',
+                borderRadius: '14px',
                 overflow: 'hidden',
+                boxShadow: '0 2px 6px rgba(0,0,0,0.04)',
               }}
             >
-              <div style={{ padding: '12px 16px', background: '#1e293b', borderBottom: '1px solid #334155', fontSize: '12px', color: '#94a3b8' }}>
-                Bảng: <b>{selectedTable}</b> • Tổng số bản ghi trong sandbox: <b>{tableData.length}</b>
+              <div style={{ padding: '12px 18px', background: '#f8fafc', borderBottom: '1px solid #e2e8f0', fontSize: '12px', color: '#64748b', fontWeight: 600 }}>
+                Bảng: <b style={{ color: '#0f172a' }}>{selectedTable}</b> • Tổng số bản ghi trong sandbox: <b style={{ color: '#0284c7' }}>{tableData.length}</b>
               </div>
               <div style={{ overflowX: 'auto', maxHeight: '500px' }}>
-                <pre style={{ padding: '16px', fontSize: '12px', color: '#38bdf8', lineHeight: 1.5, margin: 0 }}>
+                <pre style={{ padding: '16px', fontSize: '12px', color: '#0284c7', lineHeight: 1.5, margin: 0, fontFamily: 'monospace' }}>
                   {JSON.stringify(tableData, null, 2)}
                 </pre>
               </div>
@@ -741,36 +763,38 @@ export default function TrainerPanel() {
                   display: 'flex',
                   alignItems: 'center',
                   gap: '6px',
-                  padding: '6px 12px',
-                  background: '#1e293b',
-                  border: '1px solid #334155',
-                  borderRadius: '6px',
-                  color: '#94a3b8',
+                  padding: '7px 14px',
+                  background: '#ffffff',
+                  border: '1px solid #cbd5e1',
+                  borderRadius: '8px',
+                  color: '#475569',
                   fontSize: '12px',
+                  fontWeight: 600,
                   cursor: 'pointer',
                 }}
               >
-                <RefreshCw size={12} /> Làm mới nhật ký
+                <RefreshCw size={13} /> Làm mới nhật ký
               </button>
             </div>
 
             <div
               style={{
-                background: '#0f172a',
-                border: '1px solid #334155',
-                borderRadius: '12px',
+                background: '#ffffff',
+                border: '1px solid #e2e8f0',
+                borderRadius: '14px',
                 overflow: 'hidden',
+                boxShadow: '0 2px 6px rgba(0,0,0,0.04)',
               }}
             >
               <div style={{ overflowX: 'auto', maxHeight: '550px' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px' }}>
                   <thead>
-                    <tr style={{ background: '#020617', borderBottom: '1px solid #334155', color: '#94a3b8' }}>
-                      <th style={{ padding: '10px 14px', textAlign: 'left' }}>Thời gian</th>
-                      <th style={{ padding: '10px 14px', textAlign: 'left' }}>Method</th>
-                      <th style={{ padding: '10px 14px', textAlign: 'left' }}>Path</th>
-                      <th style={{ padding: '10px 14px', textAlign: 'left' }}>Status</th>
-                      <th style={{ padding: '10px 14px', textAlign: 'left' }}>Request ID</th>
+                    <tr style={{ background: '#f1f5f9', borderBottom: '1px solid #cbd5e1', color: '#0f172a' }}>
+                      <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 700 }}>Thời gian</th>
+                      <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 700 }}>Method</th>
+                      <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 700 }}>Path</th>
+                      <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 700 }}>Status</th>
+                      <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 700 }}>Request ID</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -781,19 +805,19 @@ export default function TrainerPanel() {
                         </td>
                       </tr>
                     ) : (
-                      logsData.map((l: any) => (
-                        <tr key={l.id} style={{ borderBottom: '1px solid #1e293b' }}>
-                          <td style={{ padding: '8px 14px', color: '#64748b', whiteSpace: 'nowrap' }}>
+                      logsData.map((l: any, idx: number) => (
+                        <tr key={l.id} style={{ borderBottom: '1px solid #f1f5f9', background: idx % 2 === 0 ? '#ffffff' : '#f8fafc' }}>
+                          <td style={{ padding: '9px 14px', color: '#64748b', whiteSpace: 'nowrap' }}>
                             {new Date(l.at).toLocaleTimeString()}
                           </td>
-                          <td style={{ padding: '8px 14px', fontWeight: 700, color: l.method === 'POST' ? '#38bdf8' : '#10b981' }}>
+                          <td style={{ padding: '9px 14px', fontWeight: 800, color: l.method === 'POST' ? '#0284c7' : '#10b981' }}>
                             {l.method}
                           </td>
-                          <td style={{ padding: '8px 14px', color: '#cbd5e1' }}>{l.path}</td>
-                          <td style={{ padding: '8px 14px', fontWeight: 700, color: l.status >= 400 ? '#f43f5e' : '#10b981' }}>
+                          <td style={{ padding: '9px 14px', color: '#334155', fontWeight: 600 }}>{l.path}</td>
+                          <td style={{ padding: '9px 14px', fontWeight: 800, color: l.status >= 400 ? '#e11d48' : '#10b981' }}>
                             {l.status}
                           </td>
-                          <td style={{ padding: '8px 14px', color: '#94a3b8', fontFamily: 'monospace' }}>
+                          <td style={{ padding: '9px 14px', color: '#64748b', fontFamily: 'monospace' }}>
                             {l.requestId}
                           </td>
                         </tr>
@@ -815,7 +839,7 @@ export default function TrainerPanel() {
               left: 0,
               right: 0,
               bottom: 0,
-              background: 'rgba(3, 7, 18, 0.8)',
+              background: 'rgba(15, 23, 42, 0.45)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -827,18 +851,19 @@ export default function TrainerPanel() {
               style={{
                 maxWidth: '400px',
                 width: '100%',
-                background: '#0f172a',
-                border: '1px solid #334155',
-                borderRadius: '16px',
+                background: '#ffffff',
+                border: '1px solid #e2e8f0',
+                borderRadius: '18px',
                 padding: '24px',
+                boxShadow: '0 20px 40px rgba(0,0,0,0.12)',
               }}
             >
-              <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#f8fafc', marginBottom: '14px' }}>
+              <h3 style={{ fontSize: '17px', fontWeight: 800, color: '#0f172a', marginBottom: '14px' }}>
                 Tạo Sandbox Học Viên Mới
               </h3>
               <form onSubmit={handleCreateSandbox} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: '12px', color: '#cbd5e1', marginBottom: '4px' }}>
+                  <label style={{ display: 'block', fontSize: '12px', color: '#334155', marginBottom: '4px', fontWeight: 700 }}>
                     Tên học viên / nhóm:
                   </label>
                   <input
@@ -850,10 +875,10 @@ export default function TrainerPanel() {
                     style={{
                       width: '100%',
                       padding: '10px 12px',
-                      background: '#020617',
-                      border: '1px solid #334155',
+                      background: '#f8fafc',
+                      border: '1px solid #cbd5e1',
                       borderRadius: '8px',
-                      color: '#f8fafc',
+                      color: '#0f172a',
                       fontSize: '13px',
                       outline: 'none',
                     }}
@@ -861,7 +886,7 @@ export default function TrainerPanel() {
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: '12px', color: '#cbd5e1', marginBottom: '4px' }}>
+                  <label style={{ display: 'block', fontSize: '12px', color: '#334155', marginBottom: '4px', fontWeight: 700 }}>
                     Mã Sandbox (3-10 ký tự chữ và số):
                   </label>
                   <input
@@ -874,12 +899,12 @@ export default function TrainerPanel() {
                     style={{
                       width: '100%',
                       padding: '10px 12px',
-                      background: '#020617',
-                      border: '1px solid #334155',
+                      background: '#f8fafc',
+                      border: '1px solid #cbd5e1',
                       borderRadius: '8px',
-                      color: '#38bdf8',
+                      color: '#0284c7',
                       fontSize: '14px',
-                      fontWeight: 700,
+                      fontWeight: 800,
                       outline: 'none',
                     }}
                   />
@@ -891,11 +916,12 @@ export default function TrainerPanel() {
                     onClick={() => setShowNewModal(false)}
                     style={{
                       padding: '8px 14px',
-                      background: '#1e293b',
-                      color: '#94a3b8',
-                      border: '1px solid #334155',
+                      background: '#f1f5f9',
+                      color: '#475569',
+                      border: '1px solid #cbd5e1',
                       borderRadius: '6px',
                       fontSize: '13px',
+                      fontWeight: 600,
                       cursor: 'pointer',
                     }}
                   >
@@ -905,13 +931,14 @@ export default function TrainerPanel() {
                     type="submit"
                     style={{
                       padding: '8px 16px',
-                      background: '#0284c7',
+                      background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)',
                       color: '#fff',
                       border: 'none',
                       borderRadius: '6px',
-                      fontWeight: 600,
+                      fontWeight: 700,
                       fontSize: '13px',
                       cursor: 'pointer',
+                      boxShadow: '0 2px 4px rgba(2, 132, 199, 0.25)',
                     }}
                   >
                     Khởi tạo

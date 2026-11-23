@@ -56,16 +56,16 @@ export default function SqlPlaygroundPage() {
   ];
 
   return (
-    <div style={{ minHeight: '100vh', background: '#090d16', color: '#f8fafc', padding: '24px' }}>
+    <div style={{ minHeight: '100vh', background: '#f8fafc', color: '#0f172a', padding: '28px 16px' }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         {/* Header */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
           <div>
-            <h1 style={{ fontSize: '22px', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Database color="#38bdf8" />
+            <h1 style={{ fontSize: '22px', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '8px', color: '#0f172a' }}>
+              <Database color="#0284c7" />
               SQL Tra Cứu Dữ Liệu (Học viên)
             </h1>
-            <p style={{ fontSize: '13px', color: '#94a3b8', marginTop: '4px' }}>
+            <p style={{ fontSize: '13px', color: '#64748b', marginTop: '4px' }}>
               Truy vấn cơ sở dữ liệu môi trường SIT dành cho Buổi 2 • Chỉ cho phép lệnh <code>SELECT</code> trên schema <code>learner</code>
             </p>
           </div>
@@ -73,12 +73,13 @@ export default function SqlPlaygroundPage() {
             <span
               style={{
                 fontSize: '12px',
-                padding: '4px 10px',
-                background: '#1e293b',
-                borderRadius: '6px',
-                border: '1px solid #334155',
-                color: '#38bdf8',
-                fontWeight: 600,
+                padding: '5px 12px',
+                background: '#ffffff',
+                borderRadius: '8px',
+                border: '1px solid #cbd5e1',
+                color: '#0284c7',
+                fontWeight: 700,
+                boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
               }}
             >
               Sandbox: {sandboxId}
@@ -93,13 +94,15 @@ export default function SqlPlaygroundPage() {
               key={idx}
               onClick={() => setSql(q.query)}
               style={{
-                background: '#1e293b',
-                border: '1px solid #334155',
-                color: '#cbd5e1',
-                borderRadius: '6px',
-                padding: '6px 10px',
+                background: '#ffffff',
+                border: '1px solid #cbd5e1',
+                color: '#334155',
+                borderRadius: '8px',
+                padding: '7px 12px',
                 fontSize: '12px',
+                fontWeight: 600,
                 cursor: 'pointer',
+                boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
               }}
             >
               {q.label}
@@ -110,11 +113,12 @@ export default function SqlPlaygroundPage() {
         {/* Editor Box */}
         <div
           style={{
-            background: '#0f172a',
-            border: '1px solid #334155',
-            borderRadius: '12px',
-            padding: '16px',
-            marginBottom: '16px',
+            background: '#ffffff',
+            border: '1px solid #e2e8f0',
+            borderRadius: '14px',
+            padding: '18px',
+            marginBottom: '18px',
+            boxShadow: '0 4px 6px -1px rgba(0,0,0,0.04)',
           }}
         >
           <textarea
@@ -124,20 +128,21 @@ export default function SqlPlaygroundPage() {
             placeholder="SELECT * FROM customers WHERE cif_number = '88001001';"
             style={{
               width: '100%',
-              background: '#020617',
-              border: '1px solid #1e293b',
-              borderRadius: '8px',
-              padding: '12px',
-              fontFamily: 'monospace',
+              background: '#f8fafc',
+              border: '1px solid #cbd5e1',
+              borderRadius: '10px',
+              padding: '12px 14px',
+              fontFamily: 'Consolas, Monaco, monospace',
               fontSize: '14px',
-              color: '#38bdf8',
+              color: '#0f172a',
               outline: 'none',
               resize: 'vertical',
+              fontWeight: 600,
             }}
           />
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '12px' }}>
-            <div style={{ fontSize: '11px', color: '#64748b' }}>
+            <div style={{ fontSize: '12px', color: '#64748b' }}>
               Quy tắc bảo mật: Timeout 3 giây • Tối đa 200 dòng • Tự động lọc theo sandbox của bạn • Không xem được hash mật khẩu
             </div>
             <button
@@ -147,14 +152,15 @@ export default function SqlPlaygroundPage() {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '6px',
-                padding: '8px 16px',
-                background: '#0284c7',
+                padding: '9px 18px',
+                background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)',
                 color: '#fff',
                 border: 'none',
                 borderRadius: '8px',
-                fontWeight: 600,
+                fontWeight: 700,
                 fontSize: '13px',
                 cursor: loading ? 'not-allowed' : 'pointer',
+                boxShadow: '0 2px 4px rgba(2, 132, 199, 0.25)',
               }}
             >
               <Play size={14} />
@@ -167,19 +173,20 @@ export default function SqlPlaygroundPage() {
         {error && (
           <div
             style={{
-              background: 'rgba(239, 68, 68, 0.15)',
-              border: '1px solid #ef4444',
-              borderRadius: '8px',
-              padding: '12px',
+              background: '#fff1f2',
+              border: '1px solid #fecdd3',
+              borderRadius: '10px',
+              padding: '14px',
               display: 'flex',
               alignItems: 'center',
-              gap: '8px',
-              color: '#fca5a5',
+              gap: '10px',
+              color: '#be123c',
               fontSize: '13px',
+              fontWeight: 600,
               marginBottom: '16px',
             }}
           >
-            <AlertCircle size={18} color="#ef4444" />
+            <AlertCircle size={18} color="#e11d48" />
             <span>{error}</span>
           </div>
         )}
@@ -188,48 +195,50 @@ export default function SqlPlaygroundPage() {
         {result && (
           <div
             style={{
-              background: '#0f172a',
-              border: '1px solid #334155',
-              borderRadius: '12px',
+              background: '#ffffff',
+              border: '1px solid #e2e8f0',
+              borderRadius: '14px',
               overflow: 'hidden',
+              boxShadow: '0 4px 6px -1px rgba(0,0,0,0.04)',
             }}
           >
             <div
               style={{
-                padding: '12px 16px',
-                background: '#1e293b',
-                borderBottom: '1px solid #334155',
+                padding: '12px 18px',
+                background: '#f8fafc',
+                borderBottom: '1px solid #e2e8f0',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 fontSize: '12px',
-                color: '#94a3b8',
+                color: '#64748b',
+                fontWeight: 600,
               }}
             >
               <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Table size={14} color="#38bdf8" />
-                Kết quả: <b>{result.rowCount} dòng</b>
+                <Table size={14} color="#0284c7" />
+                Kết quả: <b style={{ color: '#0f172a' }}>{result.rowCount} dòng</b>
               </span>
               <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <Clock size={14} />
-                Thời gian: <b>{result.durationMs} ms</b>
+                Thời gian: <b style={{ color: '#0f172a' }}>{result.durationMs} ms</b>
               </span>
             </div>
 
             <div style={{ overflowX: 'auto', maxHeight: '450px' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
                 <thead>
-                  <tr style={{ background: '#020617', borderBottom: '1px solid #334155' }}>
+                  <tr style={{ background: '#f1f5f9', borderBottom: '1px solid #cbd5e1' }}>
                     {result.columns.map((col: string, idx: number) => (
                       <th
                         key={idx}
                         style={{
                           padding: '10px 14px',
                           textAlign: 'left',
-                          color: '#38bdf8',
-                          fontWeight: 600,
+                          color: '#0f172a',
+                          fontWeight: 700,
                           fontSize: '12px',
-                          borderRight: '1px solid #1e293b',
+                          borderRight: '1px solid #e2e8f0',
                         }}
                       >
                         {col}
@@ -252,23 +261,24 @@ export default function SqlPlaygroundPage() {
                       <tr
                         key={rIdx}
                         style={{
-                          borderBottom: '1px solid #1e293b',
-                          background: rIdx % 2 === 0 ? '#0f172a' : '#0b1329',
+                          borderBottom: '1px solid #f1f5f9',
+                          background: rIdx % 2 === 0 ? '#ffffff' : '#f8fafc',
                         }}
                       >
                         {result.columns.map((col: string, cIdx: number) => (
                           <td
                             key={cIdx}
                             style={{
-                              padding: '8px 14px',
-                              color: '#cbd5e1',
+                              padding: '9px 14px',
+                              color: '#334155',
                               fontSize: '12px',
-                              borderRight: '1px solid #1e293b',
+                              borderRight: '1px solid #f1f5f9',
                               whiteSpace: 'nowrap',
+                              fontWeight: 500,
                             }}
                           >
                             {row[col] !== null && row[col] !== undefined ? String(row[col]) : (
-                              <span style={{ color: '#475569' }}>NULL</span>
+                              <span style={{ color: '#94a3b8', fontStyle: 'italic' }}>NULL</span>
                             )}
                           </td>
                         ))}
