@@ -14,6 +14,7 @@ import {
   User,
   Calendar,
   MapPin,
+  ChevronLeft,
   ChevronRight,
   ExternalLink,
   MessageSquare,
@@ -361,6 +362,59 @@ export default function StudentOnboardingApp() {
     return dStr;
   };
 
+  const handleGoBack = () => {
+    setApiError(null);
+    switch (currentStep) {
+      case 'S01':
+        setCurrentStep('S00');
+        break;
+      case 'S02':
+        setCurrentStep('S01');
+        break;
+      case 'S03':
+        setCurrentStep('S02');
+        break;
+      case 'S04':
+        setCurrentStep('S03');
+        break;
+      case 'S05':
+        setCurrentStep('S04');
+        break;
+      case 'S06':
+        setCurrentStep('S05');
+        break;
+      case 'S08':
+        setCurrentStep('S01');
+        break;
+      default:
+        setCurrentStep('S00');
+        break;
+    }
+  };
+
+  const getStepSubtitle = (step: string) => {
+    switch (step) {
+      case 'S01':
+        return 'BƯỚC 1: SỐ ĐIỆN THOẠI';
+      case 'S02':
+        return 'BƯỚC 1: XÁC THỰC OTP';
+      case 'S03':
+        return 'BƯỚC 2: CHỤP ẢNH CCCD';
+      case 'S04':
+        return 'BƯỚC 3: XÁC NHẬN THÔNG TIN';
+      case 'S05':
+        return 'BƯỚC 4: XÁC THỰC KHUÔN MẶT';
+      case 'S06':
+        return 'BƯỚC 5: TẠO MẬT KHẨU';
+      case 'S07':
+        return 'BƯỚC 6: HOÀN TẤT THÀNH CÔNG';
+      case 'S08':
+        return 'THÔNG BÁO TÀI KHOẢN';
+      default:
+        return 'DIGITAL BANKING';
+    }
+  };
+
   return (
     <div
       style={{
@@ -500,37 +554,67 @@ export default function StudentOnboardingApp() {
         {/* Header Branding */}
         <div
           style={{
-            padding: '14px 18px',
+            padding: '12px 16px',
             background: '#ffffff',
             borderBottom: '1px solid #e2e8f0',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
+            gap: '8px',
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div
-              style={{
-                width: '34px',
-                height: '34px',
-                borderRadius: '10px',
-                background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#fff',
-                fontWeight: 900,
-                fontSize: '17px',
-                boxShadow: '0 2px 6px rgba(2, 132, 199, 0.3)',
-              }}
-            >
-              N
-            </div>
+            {currentStep !== 'S00' && currentStep !== 'S07' ? (
+              <button
+                type="button"
+                onClick={handleGoBack}
+                aria-label="Quay lại"
+                title="Quay lại bước trước"
+                style={{
+                  width: '34px',
+                  height: '34px',
+                  borderRadius: '10px',
+                  background: '#f8fafc',
+                  border: '1px solid #cbd5e1',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#1e293b',
+                  cursor: 'pointer',
+                  boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+                  transition: 'background 0.15s ease',
+                  flexShrink: 0,
+                }}
+              >
+                <ChevronLeft size={20} />
+              </button>
+            ) : (
+              <div
+                style={{
+                  width: '34px',
+                  height: '34px',
+                  borderRadius: '10px',
+                  background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#fff',
+                  fontWeight: 900,
+                  fontSize: '17px',
+                  boxShadow: '0 2px 6px rgba(2, 132, 199, 0.3)',
+                  flexShrink: 0,
+                }}
+              >
+                N
+              </div>
+            )}
             <div>
-              <div style={{ fontWeight: 800, fontSize: '15px', color: '#0f172a', letterSpacing: '0.4px' }}>
+              <div style={{ fontWeight: 800, fontSize: '15px', color: '#0f172a', letterSpacing: '0.4px', lineHeight: 1.2 }}>
                 NeoBank
               </div>
-              <div style={{ fontSize: '10px', color: '#0284c7', fontWeight: 700 }}>DIGITAL BANKING</div>
+              <div style={{ fontSize: '10px', color: '#0284c7', fontWeight: 700, letterSpacing: '0.3px', marginTop: '1px' }}>
+                {getStepSubtitle(currentStep)}
+              </div>
             </div>
           </div>
 
@@ -549,6 +633,7 @@ export default function StudentOnboardingApp() {
                 alignItems: 'center',
                 gap: '5px',
                 cursor: 'pointer',
+                flexShrink: 0,
               }}
             >
               <MessageSquare size={13} />
@@ -754,7 +839,7 @@ export default function StudentOnboardingApp() {
                   </div>
                 </div>
 
-                <div style={{ marginTop: '20px' }}>
+                <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                   <button
                     type="submit"
                     disabled={loading}
@@ -770,9 +855,39 @@ export default function StudentOnboardingApp() {
                       cursor: loading ? 'not-allowed' : 'pointer',
                       opacity: loading ? 0.7 : 1,
                       boxShadow: '0 4px 12px rgba(2, 132, 199, 0.3)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
                     }}
                   >
-                    {loading ? 'Đang gửi mã...' : 'Gửi mã OTP'}
+                    <span>{loading ? 'Đang gửi mã...' : 'Gửi mã OTP'}</span>
+                    <ChevronRight size={16} />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setApiError(null);
+                      setCurrentStep('S00');
+                    }}
+                    style={{
+                      width: '100%',
+                      padding: '12px',
+                      borderRadius: '12px',
+                      background: '#f8fafc',
+                      color: '#64748b',
+                      fontWeight: 600,
+                      fontSize: '13px',
+                      border: '1px solid #e2e8f0',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '6px',
+                    }}
+                  >
+                    <ChevronLeft size={16} />
+                    Quay lại trang chủ
                   </button>
                 </div>
               </form>
@@ -860,24 +975,56 @@ export default function StudentOnboardingApp() {
                 </div>
               </div>
 
-              <button
-                onClick={handleVerifyOtp}
-                disabled={loading}
-                style={{
-                  width: '100%',
-                  padding: '14px',
-                  borderRadius: '12px',
-                  background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)',
-                  color: '#fff',
-                  fontWeight: 700,
-                  fontSize: '15px',
-                  border: 'none',
-                  cursor: loading ? 'not-allowed' : 'pointer',
-                  boxShadow: '0 4px 12px rgba(2, 132, 199, 0.3)',
-                }}
-              >
-                {loading ? 'Đang kiểm tra...' : 'Xác nhận OTP'}
-              </button>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <button
+                  onClick={handleVerifyOtp}
+                  disabled={loading}
+                  style={{
+                    width: '100%',
+                    padding: '14px',
+                    borderRadius: '12px',
+                    background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)',
+                    color: '#fff',
+                    fontWeight: 700,
+                    fontSize: '15px',
+                    border: 'none',
+                    cursor: loading ? 'not-allowed' : 'pointer',
+                    boxShadow: '0 4px 12px rgba(2, 132, 199, 0.3)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                  }}
+                >
+                  <span>{loading ? 'Đang kiểm tra...' : 'Xác nhận OTP'}</span>
+                  <ChevronRight size={16} />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setApiError(null);
+                    setCurrentStep('S01');
+                  }}
+                  style={{
+                    width: '100%',
+                    padding: '12px',
+                    borderRadius: '12px',
+                    background: '#f8fafc',
+                    color: '#0284c7',
+                    fontWeight: 600,
+                    fontSize: '13px',
+                    border: '1px solid #bae6fd',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px',
+                  }}
+                >
+                  <ChevronLeft size={16} />
+                  Đổi số điện thoại / Quay lại
+                </button>
+              </div>
             </div>
           )}
 
@@ -981,24 +1128,56 @@ export default function StudentOnboardingApp() {
                 </div>
               </div>
 
-              <button
-                onClick={handleProcessOcr}
-                disabled={loading}
-                style={{
-                  width: '100%',
-                  padding: '14px',
-                  borderRadius: '12px',
-                  background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)',
-                  color: '#fff',
-                  fontWeight: 700,
-                  fontSize: '15px',
-                  border: 'none',
-                  cursor: loading ? 'not-allowed' : 'pointer',
-                  boxShadow: '0 4px 12px rgba(2, 132, 199, 0.3)',
-                }}
-              >
-                {loading ? 'Đang trích xuất OCR...' : 'Trích xuất thông tin OCR'}
-              </button>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setApiError(null);
+                    setCurrentStep('S02');
+                  }}
+                  style={{
+                    padding: '14px 16px',
+                    borderRadius: '12px',
+                    background: '#f1f5f9',
+                    color: '#334155',
+                    fontWeight: 700,
+                    fontSize: '14px',
+                    border: '1px solid #cbd5e1',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '4px',
+                    flexShrink: 0,
+                  }}
+                >
+                  <ChevronLeft size={16} />
+                  Quay lại
+                </button>
+                <button
+                  onClick={handleProcessOcr}
+                  disabled={loading}
+                  style={{
+                    flex: 1,
+                    padding: '14px',
+                    borderRadius: '12px',
+                    background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)',
+                    color: '#fff',
+                    fontWeight: 700,
+                    fontSize: '15px',
+                    border: 'none',
+                    cursor: loading ? 'not-allowed' : 'pointer',
+                    boxShadow: '0 4px 12px rgba(2, 132, 199, 0.3)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px',
+                  }}
+                >
+                  <span>{loading ? 'Đang trích xuất OCR...' : 'Trích xuất thông tin OCR'}</span>
+                  <ChevronRight size={16} />
+                </button>
+              </div>
             </div>
           )}
 
@@ -1134,7 +1313,10 @@ export default function StudentOnboardingApp() {
               <div style={{ display: 'flex', gap: '8px' }}>
                 <button
                   type="button"
-                  onClick={() => setCurrentStep('S03')}
+                  onClick={() => {
+                    setApiError(null);
+                    setCurrentStep('S03');
+                  }}
                   style={{
                     flex: 1,
                     padding: '12px',
@@ -1145,8 +1327,13 @@ export default function StudentOnboardingApp() {
                     fontSize: '13px',
                     fontWeight: 700,
                     cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '4px',
                   }}
                 >
+                  <ChevronLeft size={16} />
                   Chụp lại CCCD
                 </button>
                 <button
@@ -1163,9 +1350,14 @@ export default function StudentOnboardingApp() {
                     fontWeight: 700,
                     cursor: 'pointer',
                     boxShadow: '0 4px 12px rgba(2, 132, 199, 0.3)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '4px',
                   }}
                 >
-                  Xác nhận &amp; Tiếp tục
+                  <span>Xác nhận &amp; Tiếp tục</span>
+                  <ChevronRight size={16} />
                 </button>
               </div>
             </div>
@@ -1248,24 +1440,56 @@ export default function StudentOnboardingApp() {
                 Số lần thử còn lại: <b style={{ color: faceAttemptsRemaining < 2 ? '#ef4444' : '#10b981' }}>{faceAttemptsRemaining} / 3</b>
               </div>
 
-              <button
-                onClick={handleFaceCheck}
-                disabled={loading || (faceLockUntil !== null && Date.now() < faceLockUntil)}
-                style={{
-                  width: '100%',
-                  padding: '14px',
-                  borderRadius: '12px',
-                  background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)',
-                  color: '#fff',
-                  fontWeight: 700,
-                  fontSize: '15px',
-                  border: 'none',
-                  cursor: loading ? 'not-allowed' : 'pointer',
-                  boxShadow: '0 4px 12px rgba(2, 132, 199, 0.3)',
-                }}
-              >
-                {loading ? 'Đang so khớp sinh trắc học...' : 'Bắt đầu xác thực khuôn mặt'}
-              </button>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setApiError(null);
+                    setCurrentStep('S04');
+                  }}
+                  style={{
+                    padding: '14px 16px',
+                    borderRadius: '12px',
+                    background: '#f1f5f9',
+                    color: '#334155',
+                    fontWeight: 700,
+                    fontSize: '14px',
+                    border: '1px solid #cbd5e1',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '4px',
+                    flexShrink: 0,
+                  }}
+                >
+                  <ChevronLeft size={16} />
+                  Quay lại
+                </button>
+                <button
+                  onClick={handleFaceCheck}
+                  disabled={loading || (faceLockUntil !== null && Date.now() < faceLockUntil)}
+                  style={{
+                    flex: 1,
+                    padding: '14px',
+                    borderRadius: '12px',
+                    background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)',
+                    color: '#fff',
+                    fontWeight: 700,
+                    fontSize: '15px',
+                    border: 'none',
+                    cursor: loading ? 'not-allowed' : 'pointer',
+                    boxShadow: '0 4px 12px rgba(2, 132, 199, 0.3)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px',
+                  }}
+                >
+                  <span>{loading ? 'Đang so khớp...' : 'Xác thực khuôn mặt'}</span>
+                  <ChevronRight size={16} />
+                </button>
+              </div>
             </div>
           )}
 
@@ -1388,12 +1612,37 @@ export default function StudentOnboardingApp() {
                   </label>
                 </div>
 
-                <div style={{ marginTop: '14px' }}>
+                <div style={{ display: 'flex', gap: '8px', marginTop: '14px' }}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setApiError(null);
+                      setCurrentStep('S05');
+                    }}
+                    style={{
+                      padding: '14px 16px',
+                      borderRadius: '12px',
+                      background: '#f1f5f9',
+                      color: '#334155',
+                      fontWeight: 700,
+                      fontSize: '14px',
+                      border: '1px solid #cbd5e1',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '4px',
+                      flexShrink: 0,
+                    }}
+                  >
+                    <ChevronLeft size={16} />
+                    Quay lại
+                  </button>
                   <button
                     type="submit"
                     disabled={loading}
                     style={{
-                      width: '100%',
+                      flex: 1,
                       padding: '14px',
                       borderRadius: '12px',
                       background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)',
@@ -1403,9 +1652,14 @@ export default function StudentOnboardingApp() {
                       border: 'none',
                       cursor: loading ? 'not-allowed' : 'pointer',
                       boxShadow: '0 4px 12px rgba(2, 132, 199, 0.3)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '6px',
                     }}
                   >
-                    {loading ? 'Đang khởi tạo tài khoản...' : 'Xác nhận mở tài khoản'}
+                    <span>{loading ? 'Đang khởi tạo tài khoản...' : 'Xác nhận mở tài khoản'}</span>
+                    <ChevronRight size={16} />
                   </button>
                 </div>
               </form>
@@ -1570,7 +1824,34 @@ export default function StudentOnboardingApp() {
                   Quên mật khẩu
                 </button>
                 <button
-                  onClick={() => setCurrentStep('S00')}
+                  onClick={() => {
+                    setApiError(null);
+                    setCurrentStep('S01');
+                  }}
+                  style={{
+                    width: '100%',
+                    padding: '12px',
+                    borderRadius: '10px',
+                    background: '#f0f9ff',
+                    color: '#0284c7',
+                    fontWeight: 700,
+                    fontSize: '13px',
+                    border: '1px solid #bae6fd',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px',
+                  }}
+                >
+                  <ChevronLeft size={16} />
+                  Đăng ký với số điện thoại khác
+                </button>
+                <button
+                  onClick={() => {
+                    setApiError(null);
+                    setCurrentStep('S00');
+                  }}
                   style={{
                     width: '100%',
                     padding: '12px',
